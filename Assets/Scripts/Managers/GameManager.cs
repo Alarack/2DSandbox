@@ -11,6 +11,8 @@ public class GameManager : MonoBehaviour
 
     public int createdPooledObjects;
 
+    public static List<Ability> allAbilities = new List<Ability>();
+
     private void Awake()
     {
         if (Instance == null)
@@ -22,6 +24,40 @@ public class GameManager : MonoBehaviour
         objectPools = GetComponentInChildren<ObjectPoolManager>();
 
     }
+
+    public static Ability GetAbility(string abilityName)
+    {
+        //Debug.Log("Searcing for " + abilityName);
+
+        int count = allAbilities.Count;
+        for (int i = 0; i < count; i++)
+        {
+            if (allAbilities[i].abilityName == abilityName)
+                return allAbilities[i];
+        }
+
+        //Debug.Log("couldin't find " + abilityName);
+
+        return null;
+    }
+
+    public static Ability GetAbility(int id)
+    {
+        int count = allAbilities.Count;
+        for (int i = 0; i < count; i++)
+        {
+            if (allAbilities[i].AbilityID == id)
+                return allAbilities[i];
+        }
+
+        return null;
+    }
+    
+    public static void RegisterAbility(Ability ability)
+    {
+        allAbilities.AddUnique(ability);
+    }
+
 
     public static void AddCreations()
     {

@@ -6,13 +6,27 @@ using UnityEngine;
 public class CappedStat : BaseStat {
 
     public float MaxValue { get{ return maxValue.ModifiedValue; } }
-    public float Ratio { get { return MaxValue > 0 ? (ModifiedValue / MaxValue) : 0; } }
+    public float Ratio { get { return GetRatio() /*MaxValue > 0 ? (ModifiedValue / MaxValue) : 0*/; } }
 
 
     private BaseStat maxValue;
 
     public CappedStat(StatType type, float baseValue,  float maxValue) : base(type, baseValue) {
         this.maxValue = new BaseStat(type, maxValue);
+    }
+
+    protected float GetRatio()
+    {
+        if (MaxValue <= 0)
+            return 0;
+
+
+        //Debug.Log(ModifiedValue + " is my mod value");
+        //Debug.Log(MaxValue + " is my max value");
+
+        //Debug.Log((ModifiedValue / MaxValue) + " is my ratio");
+
+        return ModifiedValue / MaxValue;
     }
 
     protected override float GetModifiedValue() {

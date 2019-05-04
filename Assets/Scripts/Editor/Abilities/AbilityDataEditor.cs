@@ -70,6 +70,10 @@ public class AbilityDataEditor : Editor {
                 entry.gainedOrLost = EditorHelper.EnumPopup("Gained or Lost?", entry.gainedOrLost);
                 entry.statChangeTarget = EditorHelper.EnumPopup("Target of Stat Change", entry.statChangeTarget);
                 break;
+
+            case Constants.AbilityActivationMethod.Manual:
+                entry.keyBind = EditorHelper.EnumPopup("Key Bind", entry.keyBind);
+                break;
         }
 
         return entry;
@@ -224,10 +228,16 @@ public class AbilityDataEditor : Editor {
             EditorGUILayout.Separator();
         }
 
+        if(entry.durationType == EffectZone.EffectZoneDuration.Instant)
+        {
+            entry.instantZoneLife = EditorHelper.FloatField("Zone Lifetime", entry.instantZoneLife);
+        }
+
         entry.effectZoneImpactVFX = EditorGUILayout.TextField("Impact Effect", entry.effectZoneImpactVFX);
         entry.effectZoneSpawnVFX = EditorGUILayout.TextField("Spawn Effect", entry.effectZoneSpawnVFX);
         entry.size = EditorHelper.EnumPopup("Size", entry.size);
         entry.shape = EditorHelper.EnumPopup("Shape", entry.shape);
+        entry.zoneName = EditorGUILayout.TextField("Name", entry.zoneName);
         entry.parentEffectToOrigin = EditorGUILayout.Toggle("Follow Source", entry.parentEffectToOrigin);
 
         return entry;

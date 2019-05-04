@@ -72,14 +72,13 @@ public class Entity : MonoBehaviour
     private void OnStatChanged(BaseStat.StatType type, GameObject cause)
     {
         //Local Event
-        //UpdateNavAgent(type);
 
         //Global Event
-        EventData data = new EventData();
-        data.AddInt("Type", (int)type);
-        data.AddGameObject("Target", this.gameObject);
-        data.AddGameObject("Cause", cause);
-        EventGrid.EventManager.SendEvent(Constants.GameEvent.StatChanged, data);
+        //EventData data = new EventData();
+        //data.AddInt("Type", (int)type);
+        //data.AddGameObject("Target", this.gameObject);
+        //data.AddGameObject("Cause", cause);
+        //EventGrid.EventManager.SendEvent(Constants.GameEvent.StatChanged, data);
     }
 
 

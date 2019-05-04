@@ -63,6 +63,8 @@ namespace LL.Events {
 
         private IDictionary<string, Effect> _effects;
 
+        private IDictionary<string, Ability> _abilities;
+
         #endregion
 
 
@@ -111,6 +113,15 @@ namespace LL.Events {
 
 
         #region Adding Keyed Values
+
+
+        public void AddAbility(string key, Ability value)
+        {
+            if (_abilities == null)
+                _abilities = new Dictionary<string, Ability>();
+
+            _abilities.Add(key, value);
+        }
 
         public void AddInt(string key, int value) {
             // Debug-time verification that we can write the data at this time with the given key
@@ -205,6 +216,17 @@ namespace LL.Events {
 
 
         #region Getting Keyed Values
+
+        public Ability GetAbility(string key)
+        {
+            Ability ability;
+            if(_abilities == null || _abilities.TryGetValue(key, out ability) == false)
+            {
+                return null;
+            }
+
+            return ability;
+        }
 
         public int GetInt(string key) {
             // Debug-time verification that we can read the data at this time with the given key

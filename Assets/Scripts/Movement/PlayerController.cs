@@ -69,19 +69,6 @@ public class PlayerController : EntityMovement {
     protected override void Update()
     {
         base.Update();
-        //ConfigureHorizontalDirection();
-
-        if (GameInput.Fire1)
-        {
-            Attack();
-        }
-
-        if (GameInput.Fire2)
-        {
-            Attack2();
-        }
-
-
     }
 
     protected override void ConfigureHorizontalDirection()
@@ -126,56 +113,56 @@ public class PlayerController : EntityMovement {
 
     #region ATTACKS
 
-    private void Attack()
-    {
-        currentAttackGameObject = attackGameObject;
-        Owner.AnimHelper.SetAnimEventAction(CreateAttackInstance);
-        Owner.AnimHelper.PlayAnimTrigger("Attack1");
-    }
+    //private void Attack()
+    //{
+    //    currentAttackGameObject = attackGameObject;
+    //    Owner.AnimHelper.SetAnimEventAction(CreateAttackInstance);
+    //    Owner.AnimHelper.PlayAnimTrigger("Attack1");
+    //}
 
-    private void Attack2()
-    {
-        currentAttackGameObject = attackGameObjectVariant;
-        Owner.AnimHelper.SetAnimEventAction(CreateAttackInstance);
-        Owner.AnimHelper.PlayAnimTrigger("Attack1");
-    }
+    //private void Attack2()
+    //{
+    //    currentAttackGameObject = attackGameObjectVariant;
+    //    Owner.AnimHelper.SetAnimEventAction(CreateAttackInstance);
+    //    Owner.AnimHelper.PlayAnimTrigger("Attack1");
+    //}
 
-    private void CreateAttackInstance()
-    {
-        Transform origin = GetAttackOriginByFacing();
+    //private void CreateAttackInstance()
+    //{
+    //    Transform origin = GetAttackOriginByFacing();
 
-        GameObject attack = Instantiate(currentAttackGameObject, origin.transform.position, currentAttackGameObject.transform.rotation) as GameObject;
-        attack.transform.SetParent(origin, false);
-        attack.transform.localPosition = Vector2.zero;
-        HitBox hit = attack.GetComponent<HitBox>();
+    //    GameObject attack = Instantiate(currentAttackGameObject, origin.transform.position, currentAttackGameObject.transform.rotation) as GameObject;
+    //    attack.transform.SetParent(origin, false);
+    //    attack.transform.localPosition = Vector2.zero;
+    //    HitBox hit = attack.GetComponent<HitBox>();
 
-        Vector2 force = new Vector2(hit.xForce, hit.yForce);
+    //    Vector2 force = new Vector2(hit.xForce, hit.yForce);
 
-        hit.SetKnockBack(CalcKnockBack(force));
-        if (GetFacing() == FacingDirection.Left)
-        {
-            attack.transform.localScale = new Vector3(attack.transform.localScale.x * -1, 1, 1);
-        }
-        //Debug.Log(attack.name + " Created");
-    }
+    //    hit.SetKnockBack(CalcKnockBack(force));
+    //    if (GetFacing() == FacingDirection.Left)
+    //    {
+    //        attack.transform.localScale = new Vector3(attack.transform.localScale.x * -1, 1, 1);
+    //    }
+    //    //Debug.Log(attack.name + " Created");
+    //}
 
-    private Vector2 CalcKnockBack(Vector2 knockBack)
-    {
-        Vector2 result = knockBack;
+    //private Vector2 CalcKnockBack(Vector2 knockBack)
+    //{
+    //    Vector2 result = knockBack;
 
-        if (Facing == FacingDirection.Left)
-        {
-            result = new Vector2(knockBack.x * -1, knockBack.y);
-        }
+    //    if (Facing == FacingDirection.Left)
+    //    {
+    //        result = new Vector2(knockBack.x * -1, knockBack.y);
+    //    }
 
-        return result;
-    }
+    //    return result;
+    //}
 
-    private Transform GetAttackOriginByFacing()
-    {
-        FacingDirection currentFacing = GetFacing();
-        return currentFacing == FacingDirection.Left ? leftOrigin : rightOrigin;
-    }
+    //private Transform GetAttackOriginByFacing()
+    //{
+    //    FacingDirection currentFacing = GetFacing();
+    //    return currentFacing == FacingDirection.Left ? leftOrigin : rightOrigin;
+    //}
 
     #endregion
 

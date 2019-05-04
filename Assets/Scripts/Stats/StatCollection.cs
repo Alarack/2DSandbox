@@ -112,12 +112,17 @@ public class StatCollection {
     public float GetCappedStatRatio(StatType type) {
         BaseStat targetStat = GetStat(type);
 
-        Debug.Log("trying to get the stat ratio for " + type);
+        //Debug.Log("trying to get the stat ratio for " + type);
 
         CappedStat cap = TryConvertToCappedStat(targetStat);
 
         if (cap != null)
+        {
+            //Debug.Log(type + " has a ratio of " + cap.Ratio);
+
             return cap.Ratio;
+        }
+
 
 
         //if (targetStat != null && targetStat is CappedStat) {
@@ -270,7 +275,7 @@ public class StatCollection {
     private CappedStat TryConvertToCappedStat(BaseStat targetStat) {
         CappedStat capped = null;
 
-        Debug.Log(targetStat.Type + " is being converted");
+        //Debug.Log(targetStat.Type + " is being converted");
 
         try {
             capped = targetStat as CappedStat;

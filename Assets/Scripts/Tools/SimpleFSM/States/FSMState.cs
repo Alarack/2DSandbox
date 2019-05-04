@@ -60,19 +60,6 @@ namespace LL.FSM {
             ExecutActions(_OnFixedUpdateActions);
         }
 
-        //public List<Ability> GetAllAbilityData()
-        //{
-        //    List<Ability> results = new List<Ability>();
-
-        //    results.AddRange(GetAbilities(_OnEnterActions));
-        //    results.AddRange(GetAbilities(_OnExitActions));
-        //    results.AddRange(GetAbilities(_OnUpdateActions));
-        //    results.AddRange(GetAbilities(_OnFixedUpdateActions));
-
-
-        //    return results;
-        //}
-
         protected void ExecutActions(List<BaseStateAction> actions)
         {
             int count = actions.Count;
@@ -95,7 +82,7 @@ namespace LL.FSM {
             RegisterEventListeners(_OnFixedUpdateActions);
         }
 
-        private void UnregisterAllEvents()
+        public void UnregisterAllEvents()
         {
             UnregisterEventListeners(_OnEnterActions);
             UnregisterEventListeners(_OnExitActions);
@@ -163,19 +150,19 @@ namespace LL.FSM {
             }
         }
 
-        private List<Ability> GetAbilities(List<BaseStateAction> actions)
-        {
-            List<Ability> results = new List<Ability>();
+        //private List<Ability> GetAbilities(List<BaseStateAction> actions)
+        //{
+        //    List<Ability> results = new List<Ability>();
 
-            int count = actions.Count;
-            for (int i = 0; i < count; i++)
-            {
-                results.AddRange(actions[i].abilities);
-            }
+        //    int count = actions.Count;
+        //    for (int i = 0; i < count; i++)
+        //    {
+        //        results.AddRange(actions[i].abilities);
+        //    }
 
 
-            return results;
-        }
+        //    return results;
+        //}
 
     }
 

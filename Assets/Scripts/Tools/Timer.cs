@@ -14,12 +14,14 @@ public class Timer
     private Action completionCallback;
 
     private float _timer;
+    public string timerName;
 
 
-    public Timer(float duration, Action completionCallback, bool resetOnComplete = false)
+    public Timer(float duration, Action completionCallback, bool resetOnComplete = false, string timerName = "")
     {
         Duration = duration;
         resetTimerOnComplete = resetOnComplete;
+        this.timerName = timerName;
 
         if (completionCallback != null)
             this.completionCallback += completionCallback;
@@ -80,7 +82,8 @@ public class Timer
     }
 }
 
-public class ComplexTimer {
+public class ComplexTimer
+{
     public Timer duration;
     public Timer interval;
 

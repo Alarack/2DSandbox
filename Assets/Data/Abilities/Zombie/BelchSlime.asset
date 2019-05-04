@@ -21,8 +21,9 @@ MonoBehaviour:
     gainedOrLost: 0
     statChangeTarget: 0
     activationTime: 0
+    keyBind: 0
   conditions:
-  - requiredCondition: 1
+  - requiredCondition: 0
     inverse: 1
     compareAgainstTarget: 0
     weightModifer: 50
@@ -33,23 +34,12 @@ MonoBehaviour:
     statRatioTarget: 0
     statRatioAmount: 0
     hasStatusType: 0
-  - requiredCondition: 1
-    inverse: 1
-    compareAgainstTarget: 0
-    weightModifer: 100
-    type: 2
-    targetDistance: 0
-    statValueTarget: 0
-    statValueAmount: 0
-    statRatioTarget: 1
-    statRatioAmount: 0.5
-    hasStatusType: 0
   abilityIcon: {fileID: 0}
   useDuration: 0.25
   procChance: 1
   overrideOtherAbilities: 0
   effectData:
-  - effectName: 
+  - effectName: Shoot projectile
     riderTarget: 
     tags: 
     effectOrigin: 5
@@ -73,23 +63,25 @@ MonoBehaviour:
       addInitialForce: 1
       initialForce:
         directionType: 5
-        amount: 750
-        angle: 45
+        amount: 500
+        angle: 70
         resetCurrentVelocity: 0
     effectZoneInfo:
-      shape: 0
+      shape: 3
       size: 3
       durationType: 0
+      instantZoneLife: 0.5
       duration: 0
       interval: 0
       removeEffectOnExit: 0
       parentEffectToOrigin: 0
-      effectZoneImpactVFX: 
+      effectZoneImpactVFX: Splat Impact
       effectZoneSpawnVFX: 
-    animationTrigger: 
+      zoneName: 
+    animationTrigger: BelchSlime
     layerMask:
       serializedVersion: 2
-      m_Bits: 512
+      m_Bits: 768
     adjInfo:
       adjustmentValue: -5
       targetStat: 1
@@ -101,7 +93,7 @@ MonoBehaviour:
       amount: 0
       angle: 0
       resetCurrentVelocity: 0
-  - effectName: 
+  - effectName: Halt Movement
     riderTarget: 
     tags: 
     effectOrigin: 0
@@ -110,7 +102,7 @@ MonoBehaviour:
     durationType: 1
     statusTypeInfo:
       stackMethod: 1
-      duration: 0.25
+      duration: 1.75
       interval: 0
       onCompleteEffectName: 
       maxStacks: 1
@@ -132,12 +124,14 @@ MonoBehaviour:
       shape: 0
       size: 0
       durationType: 0
+      instantZoneLife: 0
       duration: 0
       interval: 0
       removeEffectOnExit: 0
       parentEffectToOrigin: 0
       effectZoneImpactVFX: 
       effectZoneSpawnVFX: 
+      zoneName: 
     animationTrigger: 
     layerMask:
       serializedVersion: 2

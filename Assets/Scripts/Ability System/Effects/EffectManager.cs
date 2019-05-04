@@ -31,7 +31,14 @@ public class EffectManager {
         effects.AddRange(initialEffects);
     }
 
-
+    public void RemoveEffectEventListeners()
+    {
+        int count = effects.Count;
+        for (int i = 0; i < count; i++)
+        {
+            effects[i].RemoveEventListeners();
+        }
+    }
 
     public void AddEffect(Effect effect)
     {
@@ -46,6 +53,14 @@ public class EffectManager {
     public void ClearEffects()
     {
         effects.Clear();
+    }
+
+    public void SetupRiders()
+    {
+        for (int i = 0; i < effects.Count; i++)
+        {
+            effects[i].SetUpRiders();
+        }
     }
 
 

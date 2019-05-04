@@ -17,9 +17,6 @@ public class StatusMovementAffecting : Status {
     {
         this.baseForceAmount = forceInfo.amount;
         this.forceInfo = forceInfo;
-
-
-        //Tick();
     }
 
 
@@ -30,7 +27,7 @@ public class StatusMovementAffecting : Status {
         if (forceInfo.resetCurrentVelocity == true)
             Target.Entity().Movement.MyBody.velocity = Vector2.zero;
 
-        Debug.Log(knockback + " has been applied");
+        //Debug.Log(knockback + " has been applied");
 
         Target.Entity().Movement.MyBody.AddForce(knockback);
     }

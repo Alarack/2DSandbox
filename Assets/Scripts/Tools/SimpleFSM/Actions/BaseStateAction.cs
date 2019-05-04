@@ -7,7 +7,7 @@ public class BaseStateAction {
     public Entity owner;
     public bool RunUpdate { get; protected set; }
 
-    public List<Ability> abilities = new List<Ability>();
+    protected List<Ability> abilities = new List<Ability>();
     //protected bool isPlayer;
     protected AIBrain brain;
 
@@ -34,9 +34,48 @@ public class BaseStateAction {
         }
         else
         {
-            ActivateAbiliites();
+            //ActivateAbiliites();
+            GetInput();
+            //Comment;
         }
 
+    }
+
+    private void GetInput()
+    {
+        int count = abilities.Count;
+        for (int i = 0; i < count; i++)
+        {
+            if (CheckInput(abilities[i]) == true)
+                abilities[i].Activate();
+        }
+    }
+
+    private bool CheckInput(Ability ability)
+    {
+        bool manual = ability.GetActivationType(Constants.AbilityActivationMethod.Manual);
+
+        if(manual == true)
+        {
+            GameInput.GameButtonType targetButton = ability.GetManualActivationButton();
+
+            switch (targetButton)
+            {
+                case GameInput.GameButtonType.PrimaryAttack:
+                    return GameInput.Fire1;
+                case GameInput.GameButtonType.SecondaryAttack:
+                    return GameInput.Fire2;
+                case GameInput.GameButtonType.Jump:
+                    return GameInput.Jump;
+                case GameInput.GameButtonType.Dash:
+                    return GameInput.Dash;
+                default:
+                    return false;
+
+            }
+        }
+
+        return false;
     }
 
     public virtual void ManagedUpdate()
@@ -52,7 +91,11 @@ public class BaseStateAction {
 
     public virtual void UnregisterEvents()
     {
-
+        int count = abilities.Count;
+        for (int i = 0; i < count; i++)
+        {
+            abilities[i].EffectManager.RemoveEffectEventListeners();
+        }
     }
 
 

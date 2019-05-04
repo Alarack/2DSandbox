@@ -54,17 +54,16 @@ namespace LL.FSM {
             return null;
         }
 
-        //public FSMState GetState<T>(T type)
-        //{
-        //    int count = states.Count;
-        //    for (int i = 0; i < count; i++)
-        //    {
-        //        if (states[i] is T)
-        //            return states[i];
-        //    }
+        public void UnregisterEventListeners()
+        {
+            int count = states.Count;
+            for (int i = 0; i < count; i++)
+            {
+                states[i].UnregisterAllEvents();
+            }
+        }
 
-        //    return null;
-        //}
+
 
 
     }

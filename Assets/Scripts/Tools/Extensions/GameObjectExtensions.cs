@@ -21,7 +21,7 @@ public static class GameObjectExtensions {
 
         if(result == null)
         {
-            Debug.LogError(go.name + " has no stats");
+            Debug.LogWarning(go.name + " has no stats");
         }
 
         return result;

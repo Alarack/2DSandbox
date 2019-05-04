@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using LL.Events;
 
 public class AnimHelper : MonoBehaviour
 {
@@ -84,10 +85,29 @@ public class AnimHelper : MonoBehaviour
 
     public void RecieveAnimEvent(AnimationEvent param)
     {
-        //Debug.Log("Recieving " + param + " from anim event");
+        //Debug.Log("Recieving " + param.stringParameter + " from anim event");
 
         if (this.callback != null)
             callback();
+
+        SendEffectDeliveryEvent(param.stringParameter);
+    }
+
+
+    private void SendEffectDeliveryEvent(string abilityName)
+    {
+        Ability targetAbility = GameManager.GetAbility(abilityName);
+
+        if (targetAbility == null)
+            return;
+
+        EventData data = new EventData();
+
+        data.AddAbility(abilityName, targetAbility);
+
+        Debug.Log("sending an anim event with name " + abilityName + " Found: " + (targetAbility != null));
+
+        EventGrid.EventManager.SendEvent(Constants.GameEvent.AnimEvent, data);
     }
 
 }

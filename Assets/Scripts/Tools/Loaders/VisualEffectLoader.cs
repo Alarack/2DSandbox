@@ -8,6 +8,8 @@ public static class VisualEffectLoader  {
         Sphere = 0,
         Cube = 1,
         Cone = 2,
+        Circle = 3,
+        Rectangle = 4,
     }
 
     public enum VisualEffectSize {
@@ -20,9 +22,9 @@ public static class VisualEffectLoader  {
         Huge = 6,
     }
 
-    public static GameObject LoadVisualEffect(VisualEffectShape shape, VisualEffectSize size)
+    public static GameObject LoadVisualEffect(VisualEffectShape shape, VisualEffectSize size, string name = "")
     {
-        GameObject result = Resources.Load("Visual Effects/" + shape + "/" + size) as GameObject;
+        GameObject result = Resources.Load("Visual Effects/" + shape + "/" + size + name) as GameObject;
 
         return result;
     }

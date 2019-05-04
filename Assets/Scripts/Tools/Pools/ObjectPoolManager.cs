@@ -10,15 +10,28 @@ public class ObjectPoolManager : MonoBehaviour
         [Header("Pool Info")]
         public ObjectPoolType type;
         public PooledObject prefab;
+        //public List<ObjectPoolVarient> variants = new List<ObjectPoolVarient>();
         public Transform holder;
         public int size;
     }
 
-    public enum ObjectPoolType {
+    //[System.Serializable]
+    //public class ObjectPoolVarient {
+    //    public PoolVariantType variant;
+    //    public PooledObject prefab;
+    //}
+
+    public enum ObjectPoolType { // Pools Need Variants for colors. Make a calls for pool type instead of just this enum
         Splat,
         Limb,
-        Corpse
+        Corpse,
+        GreenSplat
     }
+    //public enum PoolVariantType {
+    //    None,
+    //    Red,
+    //    Green
+    //}
 
     [Header("Pools")]
     public List<Pool> pools = new List<Pool>();
@@ -84,7 +97,23 @@ public class ObjectPoolManager : MonoBehaviour
         for (int i = 0; i < count; i++)
         {
             if (pools[i].type == type)
-                return pools[i].prefab;
+            {
+                //if (variant != PoolVariantType.None)
+                //{
+                //    int vCount = pools[i].variants.Count;
+                //    for (int j = 0; j < count; j++)
+                //    {
+                //        if(pools[i].variants[j].variant == variant)
+                //        {
+                //            return pools[i].variants[j].prefab;
+                //        }
+                //    }
+                //}
+                //else
+                //{
+                    return pools[i].prefab;
+                //}
+            }
         }
 
         return null;
@@ -153,13 +182,14 @@ public class ObjectPoolManager : MonoBehaviour
     public static PoolRequestInfo CreatePoolInfo(ObjectPoolType poolType, Transform parent = null, Vector3? position = null,
             Quaternion? rotation = null, bool worldPositionStays = false, bool localPosition = false)
     {
-        return new PoolRequestInfo(poolType,  parent, position, rotation, worldPositionStays, localPosition);
+        return new PoolRequestInfo(poolType, parent, position, rotation, worldPositionStays, localPosition);
     }
 
 
 
     public struct PoolRequestInfo {
         public ObjectPoolType poolType;
+        //public PoolVariantType variant;
         public Transform parent;
         public Vector3? position;
         public Quaternion? rotation;
@@ -175,6 +205,7 @@ public class ObjectPoolManager : MonoBehaviour
             this.rotation = rotation;
             this.worldPositionStays = worldPositionStays;
             this.localPosition = localPosition;
+            //this.variant = variant;
         }
     }
 

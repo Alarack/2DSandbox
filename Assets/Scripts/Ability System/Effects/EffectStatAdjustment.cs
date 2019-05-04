@@ -6,12 +6,13 @@ using UnityEngine;
 public class EffectStatAdjustment : Effect {
 
     protected StatAdjustmentInfo adjInfo;
-
+    protected StatCollection sourceStats;
     //private List<StatusStatAdjustment> activeStatus = new List<StatusStatAdjustment>();
 
     public EffectStatAdjustment(Ability parentAbility, StatAdjustmentInfo adjInfo): base(parentAbility)
     {
         this.adjInfo = adjInfo;
+        this.sourceStats = parentAbility.Source.GetStats();
     }
 
     public override void Apply(GameObject target)
@@ -35,7 +36,7 @@ public class EffectStatAdjustment : Effect {
 
     protected void ApplyInstantStatAdjustment(GameObject target)
     {
-        StatAdjustmentManager.ApplyUntrackedStatMod(ParentAbility.Source.GetStats(), target.GetStats(), adjInfo.targetStat, adjInfo.adjustmentValue, adjInfo.modType, adjInfo.options.ToArray());
+        StatAdjustmentManager.ApplyUntrackedStatMod(sourceStats, target.GetStats(), adjInfo.targetStat, adjInfo.adjustmentValue, adjInfo.modType, adjInfo.options.ToArray());
     }
 
     protected override bool CreateAndRegisterStatus(GameObject target)

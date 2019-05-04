@@ -39,7 +39,6 @@ public static class EffectFactory {
         result.durationType = data.durationType;
         result.projectileInfo = data.projectileInfo;
 
-
         return result;
     }
 

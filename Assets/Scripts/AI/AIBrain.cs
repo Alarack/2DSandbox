@@ -15,12 +15,6 @@ public class AIBrain : MonoBehaviour
         this.sensor = sensor;
     }
 
-
-    private void Update()
-    {
-
-    }
-
     public void TargetSpotted()
     {
         Owner.Aggro();
@@ -38,9 +32,23 @@ public class AIBrain : MonoBehaviour
     }
 
 
+    private bool IsAbilityInUse(List<Ability> abilities)
+    {
+        int count = abilities.Count;
+        for (int i = 0; i < count; i++)
+        {
+            if (abilities[i].InUse == true)
+                return true;
+        }
+
+        return false;
+    }
 
     private void SelectAbility(List<Ability> abilities)
     {
+
+        bool inUse = IsAbilityInUse(abilities);
+
         Dictionary<Ability, float> weightedAbilityDict = new Dictionary<Ability, float>();
 
         int count = abilities.Count;
@@ -48,7 +56,6 @@ public class AIBrain : MonoBehaviour
         {
             if (sensor.ClosestTarget == null)
             {
-                Debug.Log("Sensor didn't have a target");
                 return;
             }
 
@@ -58,27 +65,24 @@ public class AIBrain : MonoBehaviour
             if (abilities[i].RecoveryManager.HasRecovery == true && abilities[i].RecoveryManager.HasCharges == false)
                 continue;
 
+            if (inUse && abilities[i].OverrideOtherAbilities == false)
+                continue;
+
             float moddedWeight = abilities[i].GetModifiedWeight(sensor.ClosestTarget);
             weightedAbilityDict.Add(abilities[i], moddedWeight);
         }
 
         int countOfUsableAbilities = weightedAbilityDict.Count;
 
-        Debug.Log(countOfUsableAbilities + " abiliites are ready to be used");
+        //Debug.Log(countOfUsableAbilities + " abiliites are ready to be used");
+
+        
 
         if(countOfUsableAbilities > 0)
         {
             Ability chosen = weightedAbilityDict.OrderBy(k => k.Value).Last().Key;
 
             chosen.Activate();
-        }
-
-
-        foreach (KeyValuePair<Ability, float> entry in weightedAbilityDict)
-        {
-            //Debug.Log(entry.Key.abilityName + " has a weight of " + entry.Value);
-
-            
         }
     }
 }

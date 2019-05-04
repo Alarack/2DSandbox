@@ -27,6 +27,13 @@ public static class EffectZoneFactory {
         if (zoneObject == null)
             return null;
 
+        EntityMovement.FacingDirection facing = source.Entity().Movement.Facing;
+
+        if (facing == EntityMovement.FacingDirection.Left)
+        {
+            zoneObject.transform.localScale = new Vector3(zoneObject.transform.localScale.x * -1, zoneObject.transform.localScale.y, zoneObject.transform.localScale.z);
+        }
+
 
         result = ConfigureZone(zoneInfo, ref zoneObject, ref result);
 
@@ -68,7 +75,7 @@ public static class EffectZoneFactory {
 
     private static GameObject LoadAndSpawnZonePrefab(ZoneInfo zoneInfo, Vector3 spawnPoint, Quaternion spawnRotation)
     {
-        GameObject loadedPrefab = VisualEffectLoader.LoadVisualEffect(zoneInfo.shape, zoneInfo.size);
+        GameObject loadedPrefab = VisualEffectLoader.LoadVisualEffect(zoneInfo.shape, zoneInfo.size, zoneInfo.zoneName);
 
         if (loadedPrefab == null)
         {

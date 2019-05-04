@@ -125,22 +125,7 @@ public class BaseStat {
     protected virtual float GetModifiedValue()
     {
         float result = BaseValue + GetTotalAdditiveMod();
-
-        if (Type == StatType.MoveSpeed)
-        {
-            //Debug.Log(Type + " has a Base Value of of " + BaseValue);
-            //Debug.Log(Type + " has a multiplyer of " + GetTotalMultiplier());
-        }
-
-
-        //float resultMultiplied = result * GetTotalMultiplier();
-        //if (Type == StatType.MoveSpeed)
-        //    Debug.Log(resultMultiplied);
-
         result *= GetTotalMultiplier();
-
-        //if (Type == StatType.MoveSpeed)
-        //    Debug.Log(Type + " has a total moded value of " + result);
 
         return result;
     }

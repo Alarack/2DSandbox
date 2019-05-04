@@ -21,6 +21,7 @@ MonoBehaviour:
     gainedOrLost: 0
     statChangeTarget: 0
     activationTime: 0
+    keyBind: 0
   conditions:
   - requiredCondition: 0
     inverse: 0
@@ -34,15 +35,69 @@ MonoBehaviour:
     statRatioAmount: 0
     hasStatusType: 0
   abilityIcon: {fileID: 0}
-  useDuration: 0
+  useDuration: 0.25
   procChance: 1
   overrideOtherAbilities: 0
   effectData:
-  - effectName: Move FOrward
+  - effectName: Deal Damage
     riderTarget: 
     tags: 
+    effectOrigin: 5
+    deliveryMethod: 1
+    effectType: 1
+    durationType: 0
+    statusTypeInfo:
+      stackMethod: 0
+      duration: 0
+      interval: 0
+      onCompleteEffectName: 
+      maxStacks: 0
+      statusType: 0
+      animBool: 
+    projectileInfo:
+      prefabName: 
+      spreadType: 0
+      projectileCount: 0
+      error: 0
+      burstDelay: 0
+      addInitialForce: 0
+      initialForce:
+        directionType: 0
+        amount: 0
+        angle: 0
+        resetCurrentVelocity: 0
+    effectZoneInfo:
+      shape: 4
+      size: 3
+      durationType: 0
+      instantZoneLife: 0.25
+      duration: 0
+      interval: 0
+      removeEffectOnExit: 0
+      parentEffectToOrigin: 1
+      effectZoneImpactVFX: 
+      effectZoneSpawnVFX: 
+      zoneName: LungeBox
+    animationTrigger: Lunge
+    layerMask:
+      serializedVersion: 2
+      m_Bits: 512
+    adjInfo:
+      adjustmentValue: -1
+      targetStat: 1
+      modType: 0
+      permanent: 1
+      options: 
+    addForceInfo:
+      directionType: 0
+      amount: 0
+      angle: 0
+      resetCurrentVelocity: 0
+  - effectName: Knockback
+    riderTarget: Deal Damage
+    tags: 
     effectOrigin: 0
-    deliveryMethod: 3
+    deliveryMethod: 5
     effectType: 2
     durationType: 1
     statusTypeInfo:
@@ -69,12 +124,68 @@ MonoBehaviour:
       shape: 0
       size: 0
       durationType: 0
+      instantZoneLife: 0
       duration: 0
       interval: 0
       removeEffectOnExit: 0
       parentEffectToOrigin: 0
       effectZoneImpactVFX: 
       effectZoneSpawnVFX: 
+      zoneName: 
+    animationTrigger: 
+    layerMask:
+      serializedVersion: 2
+      m_Bits: 512
+    adjInfo:
+      adjustmentValue: 0
+      targetStat: 0
+      modType: 0
+      permanent: 0
+      options: 
+    addForceInfo:
+      directionType: 5
+      amount: 500
+      angle: 35
+      resetCurrentVelocity: 1
+  - effectName: Move Forward
+    riderTarget: Deal Damage
+    tags: 
+    effectOrigin: 0
+    deliveryMethod: 3
+    effectType: 2
+    durationType: 1
+    statusTypeInfo:
+      stackMethod: 2
+      duration: 0.25
+      interval: 0
+      onCompleteEffectName: 
+      maxStacks: 0
+      statusType: 9
+      animBool: 
+    projectileInfo:
+      prefabName: 
+      spreadType: 0
+      projectileCount: 0
+      error: 0
+      burstDelay: 0
+      addInitialForce: 0
+      initialForce:
+        directionType: 0
+        amount: 0
+        angle: 0
+        resetCurrentVelocity: 0
+    effectZoneInfo:
+      shape: 0
+      size: 0
+      durationType: 0
+      instantZoneLife: 0
+      duration: 0
+      interval: 0
+      removeEffectOnExit: 0
+      parentEffectToOrigin: 0
+      effectZoneImpactVFX: 
+      effectZoneSpawnVFX: 
+      zoneName: 
     animationTrigger: 
     layerMask:
       serializedVersion: 2

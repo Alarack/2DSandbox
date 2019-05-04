@@ -1,5 +1,19 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!114 &6377123882862344559
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5553560837169038893}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 485b400a97b85064d952570ca7e24642, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  splatParticles: {fileID: 4948799184672034091}
+  poolType: 3
 --- !u!1 &7074745067300050432
 GameObject:
   m_ObjectHideFlags: 0
@@ -62,10 +76,10 @@ CircleCollider2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7074745067300050432}
-  m_Enabled: 0
+  m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 6200000, guid: 95b8bd0e9b642fa4ba643e7b71131a84, type: 2}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
@@ -171,6 +185,18 @@ PrefabInstance:
 --- !u!4 &3317794859304429307 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1953686919376667855, guid: 1cd79c907a4d24b45b59c05bd6a20084,
+    type: 3}
+  m_PrefabInstance: {fileID: 3825754275644121652}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &5553560837169038893 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8648592533330879513, guid: 1cd79c907a4d24b45b59c05bd6a20084,
+    type: 3}
+  m_PrefabInstance: {fileID: 3825754275644121652}
+  m_PrefabAsset: {fileID: 0}
+--- !u!198 &4948799184672034091 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 8194974197184573215, guid: 1cd79c907a4d24b45b59c05bd6a20084,
     type: 3}
   m_PrefabInstance: {fileID: 3825754275644121652}
   m_PrefabAsset: {fileID: 0}

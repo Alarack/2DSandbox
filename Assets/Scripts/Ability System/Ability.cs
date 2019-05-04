@@ -46,10 +46,11 @@ public class Ability {
         EffectManager = new EffectManager(this);
         RecoveryManager = new AbilityRecoveryManager(this);
 
-        useTimer = new Timer(UseDuration, PopUseTimer, true);
         SetUpAbilityData();
 
-        
+        useTimer = new Timer(UseDuration, PopUseTimer, true, "Use");
+
+        GameManager.RegisterAbility(this);
     }
 
     private void SetUpAbilityData()
@@ -62,9 +63,10 @@ public class Ability {
         OverrideOtherAbilities = abilityData.overrideOtherAbilities;
         baseWeight = abilityData.baseWeight;
         conditions = abilityData.conditions;
-        
+
         CreateEffects();
         CreateRecoveryMethods();
+        EffectManager.SetupRiders();
     }
 
     private void CreateEffects()
@@ -76,6 +78,8 @@ public class Ability {
             EffectManager.AddEffect(newEffect);
         }
     }
+
+
 
     private void CreateRecoveryMethods()
     {
@@ -233,11 +237,13 @@ public class Ability {
         {
             AbilityActivationInfo currentMethod = activations[i];
             currentMethod.ManagedUpdate();
-
         }
 
         if (useTimer != null && InUse)
+        {
             useTimer.UpdateClock();
+        }
+
     }
 
 
@@ -403,6 +409,32 @@ public class Ability {
     }
 
 
+    public bool GetActivationType(AbilityActivationMethod method)
+    {
+        int count = activations.Count;
+        for (int i = 0; i < count; i++)
+        {
+            if (activations[i].activationMethod == method)
+                return true;
+        }
+
+
+        return false;
+    }
+
+    public GameInput.GameButtonType GetManualActivationButton()
+    {
+        AbilityActivationInfo info;
+
+        if(GetActivator(AbilityActivationMethod.Manual, out info))
+        {
+            return info.keyBind;
+        }
+
+        return GameInput.GameButtonType.None;
+    }
+
+
 }
 
 [System.Serializable]
@@ -418,6 +450,9 @@ public struct AbilityActivationInfo {
     //Timed
     public float activationTime;
     public Timer activaionTimer;
+
+    //Manual
+    public GameInput.GameButtonType keyBind;
 
 
 
@@ -516,10 +551,12 @@ public class AbilityCondition {
     public bool CheckStatRatio(GameObject target, GameObject source)
     {
         bool result = false;
-        float statRatio = compareAgainstTarget == true ? target.Entity().EntityStats.GetCappedStatRatio(statValueTarget) : source.Entity().EntityStats.GetCappedStatRatio(statValueTarget);
+        float statRatio = compareAgainstTarget == true ? target.Entity().EntityStats.GetCappedStatRatio(statRatioTarget) : source.Entity().EntityStats.GetCappedStatRatio(statRatioTarget);
 
         if (statRatio >= statRatioAmount)
             result = true;
+
+        //Debug.Log(source.Entity().EntityStats.GetCappedStatRatio(statRatioTarget) + " is my health ratio");
 
         return result;
     }

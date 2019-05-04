@@ -11,7 +11,7 @@ public class Constants  {
         EntityDied = 2,
         EffectApplied = 3,
         EffectRemoved = 4,
-        
+        AnimEvent = 5,
 
     }
 
@@ -92,6 +92,7 @@ public class Constants  {
         CharacterCenter = 3,
         MousePointer = 4,
         CharacterFront = 5,
+        Head = 6
     }
 
     public enum EffectDeliveryMethod {

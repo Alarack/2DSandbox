@@ -32,6 +32,9 @@ public abstract class EffectZone : MonoBehaviour {
             transform.SetParent(parentToThis, false);
             transform.localPosition = Vector3.zero;
         }
+
+        //Debug.Log("Effect zone created");
+
     }
 
     protected abstract void Apply(GameObject target);
@@ -134,7 +137,11 @@ public abstract class EffectZone : MonoBehaviour {
     protected void CreateImpactEffect(Vector2 location)
     {
         if (string.IsNullOrEmpty(impactEffect) == true)
+        {
+            //Debug.Log(parentEffect.effectName + " has no impact effect name. " + impactEffect + " has been given.");
             return;
+        }
+        
 
         GameObject loadedPrefab = Resources.Load("HitEffects/" + impactEffect) as GameObject;
 
@@ -144,6 +151,7 @@ public abstract class EffectZone : MonoBehaviour {
             return;
         }
 
+        //Debug.Log("creating an impact effect vfx clalled " + loadedPrefab.name);
 
         Vector2 loc = new Vector2(location.x + Random.Range(-0.5f, 0.5f), location.y + Random.Range(-0.5f, 0.5f));
 

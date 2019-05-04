@@ -1,54 +1,70 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using LL.Events;
 
 public class HealthDeathManager : MonoBehaviour {
 
     public GameObject corpse;
-
+    public bool cheat;
     public Entity Owner { get; private set; }
-    public float Ratio { get { return currentHealth / maxHealth; } }
-    public float maxHealth;
+    public float Ratio { get { return Owner.EntityStats.GetCappedStatRatio(BaseStat.StatType.Health); } }
+    //public float maxHealth;
+    public float Health { get {return Owner.EntityStats.GetStatModifiedValue(BaseStat.StatType.Health); } }
 
 
-
-    private float currentHealth;
+    //private float currentHealth;
     private bool dying;
 
 
     public void Initialize(Entity owner)
     {
         Owner = owner;
-        currentHealth = maxHealth;
+        //currentHealth = maxHealth;
     }
 
-
-    public void AlterHealth(float value)
+    private void OnEnable()
     {
-        currentHealth += value;
+        EventGrid.EventManager.RegisterListener(Constants.GameEvent.StatChanged, OnStatChanged);
+    }
+
+    private void OnDisable()
+    {
+        EventGrid.EventManager.RemoveListener(Constants.GameEvent.StatChanged, OnStatChanged);
+    }
+
+    //public void UpdateHealth()
+    //{
+    //    if (Health <= 0f && dying == false && cheat == false)
+    //    {
+    //        Die();
+    //    }
+    //}
 
 
-        //Debug.Log(value + " damage is dealt to " + Owner.gameObject.name);
-        //Debug.Log(currentHealth + " is current health");
+    public void OnStatChanged(EventData data)
+    {
+        GameObject target = data.GetGameObject("Target");
+        BaseStat.StatType stat = (BaseStat.StatType)data.GetInt("Stat");
+        float value = data.GetFloat("Value");
 
-        if (currentHealth < 0)
-            currentHealth = 0;
+        //Debug.Log(target.name + " " + stat + " " + value);
 
-        if (currentHealth > maxHealth)
-            currentHealth = maxHealth;
+        if (target != Owner.gameObject)
+            return;
+
+        if (stat != BaseStat.StatType.Health)
+            return;
 
         if (value < 0f)
         {
             Owner.AnimHelper.PlayAnimTrigger("Flinch");
         }
 
-        if (currentHealth <= 0f && dying == false)
+        //Debug.Log(Health + " is the current health of " + Owner.gameObject.name);
+
+        if (Health <= 0f && dying == false && cheat == false)
         {
-            //EntityMovement movement = Owner.Movement;
-            //if (movement != null)
-            //{
-            //    movement.SpinCrazy();
-            //}
             Die();
         }
 
@@ -64,6 +80,7 @@ public class HealthDeathManager : MonoBehaviour {
             //Debug.Log(gameObject.name + " died");
         }
 
+        Owner.FSMManager.UnregisterEventListeners();
         CreateCorpse();
         Destroy(gameObject);
     }

@@ -82,7 +82,7 @@ public class StatusStatAdjustment : Status {
             int count = mods.Count;
             for (int i = 0; i < count; i++)
             {
-                Debug.Log("removing a mod via status clean up");
+                //Debug.Log("removing a mod via status clean up");
                 StatAdjustmentManager.RemoveTrackedStatMod(SourceEffect.ParentAbility.Source.GetStats(), Target.GetStats(), targetStat, mods[i], options);
             }
 

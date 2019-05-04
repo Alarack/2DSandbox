@@ -76,7 +76,11 @@ public class Projectile : MonoBehaviour {
 
     private void DeployAfterLayerCheck(GameObject other)
     {
-        if (LayerTools.IsLayerInMask(Mask, other.gameObject.layer) == false)
+        //if (LayerTools.IsLayerInMask(Mask, other.gameObject.layer) == false)
+        //    return;
+
+        Collider2D otherCollider = other.GetComponent<Collider2D>();
+        if (otherCollider != null && otherCollider.isTrigger == true)
             return;
 
         DeployEffectZone();

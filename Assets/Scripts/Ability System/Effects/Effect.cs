@@ -8,7 +8,8 @@ using EffectTag = Constants.EffectTag;
 using EffectType = Constants.EffectType;
 
 [System.Serializable]
-public class Effect {
+public class Effect
+{
 
     public string effectName;
     public string riderTarget;
@@ -58,13 +59,61 @@ public class Effect {
         this.ParentAbility = parentAbility;
         Targets = new List<GameObject>();
 
+        EffectID = IDFactory.GenerateEffectID();
+
+    }
+
+    public virtual void SetUpRiders()
+    {
+        if (deliveryMethod != EffectDeliveryMethod.Rider)
+            return;
+
+        Effect host = parentAbility.EffectManager.GetEffectByName(riderTarget);
+
+        if (host != null)
+        {
+            host.AddRider(this);
+        }
+
+    }
+
+    public void RemoveEventListeners()
+    {
+        Debug.Log("removing listeners for " + effectName);
+        EventGrid.EventManager.RemoveMyListeners(this);
+    }
 
 
+    public virtual void AddRider(Effect effect)
+    {
+        riders.AddUnique(effect);
     }
 
     public virtual void Activate()
     {
+        if (string.IsNullOrEmpty(animationTrigger) == false)
+        {
+            Debug.Log(effectName + " is registering a listern for anim events");
+            EventGrid.EventManager.RegisterListener(Constants.GameEvent.AnimEvent, OnAnimEvent);
+        }
+
+
+        Debug.Log("Activating " + effectName);
         PlayEffectAnim();
+    }
+
+    private void OnAnimEvent(EventData data)
+    {
+        Ability a = data.GetAbility(parentAbility.abilityName);
+
+        Debug.Log("Reciving an anim event for " + parentAbility.abilityName + " Found: " + (a != null));
+
+        //Debug.Log(a.abilityName + "has sent an event");
+
+        if (a != null)
+        {
+            BeginDelivery();
+        }
     }
 
     public virtual bool IsFromSameSource(Ability ability)
@@ -74,6 +123,8 @@ public class Effect {
 
     public virtual void BeginDelivery()
     {
+        Debug.Log("begining delivery for " + effectName);
+
         switch (deliveryMethod)
         {
             case EffectDeliveryMethod.Instant:
@@ -85,6 +136,8 @@ public class Effect {
                     Transform originPoint = null;
                     if (effectZoneInfo.parentEffectToOrigin == true)
                         originPoint = Source.Entity().EffectDelivery.GetOriginPoint(effectOrigin);
+
+                    //Debug.Log(originPoint + " is the state transform");
 
                     activeZone.Initialize(this, layerMask, originPoint);
                 }
@@ -101,13 +154,23 @@ public class Effect {
                 break;
 
             case EffectDeliveryMethod.ExistingTargets:
-
+                //foreach (GameObject g in parentAbility.targets)
+                //{
+                //    Apply(g);
+                //}
                 break;
 
             case EffectDeliveryMethod.Rider:
 
                 break;
         }
+
+        if (string.IsNullOrEmpty(animationTrigger) == false)
+        {
+            //Debug.Log("Removeing a listerner for " + parentAbility.abilityName);
+            EventGrid.EventManager.RemoveListener(Constants.GameEvent.AnimEvent, OnAnimEvent);
+        }
+
     }
 
     #region PROJECTILE CREATION
@@ -119,7 +182,7 @@ public class Effect {
             Projectile shot = ProjectileFactory.CreateProjectile(projectileInfo, effectOrigin, ParentAbility.Source);
             shot.Initialize(this);
 
-            if(projectileInfo.addInitialForce == true)
+            if (projectileInfo.addInitialForce == true)
             {
                 Vector2 force = projectileInfo.initialForce.CalcDirectionAndForce(shot.gameObject, Source);
                 shot.GetComponent<Rigidbody2D>().AddForce(force);
@@ -165,6 +228,8 @@ public class Effect {
         ApplyRiderEffects(target);
         SendEffectAppliedEvent(target);
 
+        //Debug.Log(parentAbility.abilityName + " is applying an effect");
+
     }
 
     protected virtual void CreateStatusInfo(GameObject target)
@@ -207,7 +272,7 @@ public class Effect {
         int count = riders.Count;
         for (int i = 0; i < count; i++)
         {
-
+            riders[i].Apply(target);
         }
     }
 
@@ -221,11 +286,20 @@ public class Effect {
     {
         //TODO: this assumes the source is always an entity, it could be a projectile
         bool animStarted = Source.Entity().AnimHelper.PlayAnimTrigger(animationTrigger); // Animation trigger will start the delivery at the right time.
+        //Debug.Log(parentAbility.abilityName + " is trying to play an anim for " + effectName);
 
-        //Debug.Log(animStarted + " is anim started");
-
-        if (animStarted == false) // Start Delivery Instantly if there isn't an animator.
+        if (animStarted == false)
+        { // Start Delivery Instantly if there isn't an animator.
+            //Debug.Log("anim not found on " + effectName + ", begning delivery immediately for " + effectName);
             BeginDelivery();
+        }
+        //else
+        //{
+        //    Debug.Log(parentAbility.abilityName + " has started an animation for " + effectName);
+        //}
+
+        //else
+        //    Source.Entity().AnimHelper.SetAnimEventAction(BeginDelivery);
     }
 
 
@@ -258,28 +332,32 @@ public class Effect {
 
 
 [System.Serializable]
-public struct EffectOriginPoint {
+public struct EffectOriginPoint
+{
     public Transform point;
     public Constants.EffectOrigin originType;
 }
 
 
 [System.Serializable]
-public struct ZoneInfo {
+public struct ZoneInfo
+{
     public VisualEffectLoader.VisualEffectShape shape;
     public VisualEffectLoader.VisualEffectSize size;
     public EffectZone.EffectZoneDuration durationType;
-
+    public float instantZoneLife;
     public float duration;
     public float interval;
     public bool removeEffectOnExit;
     public bool parentEffectToOrigin;
     public string effectZoneImpactVFX;
     public string effectZoneSpawnVFX;
+    public string zoneName;
 
 
     public ZoneInfo(VisualEffectLoader.VisualEffectShape shape, VisualEffectLoader.VisualEffectSize size, EffectZone.EffectZoneDuration durationType,
-        float duration, float interval, bool removeEffectOnExit, bool parentEffectToOrigin, string effectZoneImpactVFX, string effectZoneSpawnVFX)
+        float duration, float interval, bool removeEffectOnExit, bool parentEffectToOrigin, string effectZoneImpactVFX, string effectZoneSpawnVFX,
+        string zoneName, float instantZoneLife)
     {
         this.shape = shape;
         this.size = size;
@@ -290,6 +368,8 @@ public struct ZoneInfo {
         this.parentEffectToOrigin = parentEffectToOrigin;
         this.effectZoneImpactVFX = effectZoneImpactVFX;
         this.effectZoneSpawnVFX = effectZoneSpawnVFX;
+        this.zoneName = zoneName;
+        this.instantZoneLife = instantZoneLife;
     }
 
 }

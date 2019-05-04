@@ -4,6 +4,17 @@ using UnityEngine;
 
 public static class GameInput 
 {
+    public enum GameButtonType
+    {
+        None,
+        PrimaryAttack,
+        SecondaryAttack,
+        SpecialAttack,
+        Jump,
+        Dash,
+
+    }
+
 
 
     #region DIRECTIONS

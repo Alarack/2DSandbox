@@ -25,6 +25,9 @@ public static class StatAdjustmentManager {
 
     public static void ApplyUntrackedStatMod(StatCollection source, StatCollection target, StatType stat, float value, StatModificationType modType, params StatModifierOption[] statOptions)
     {
+        if (target == null)
+            return;
+
         target.ApplyPermanentMod(stat, value, modType, source.Owner, statOptions);
         SendStatChangeEvent(source.Owner, target.Owner, stat, value);
     }

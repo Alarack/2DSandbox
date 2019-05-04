@@ -5,7 +5,8 @@ using UnityEngine;
 public class SplatSpawner : MonoBehaviour
 {
     public ParticleSystem splatParticles;
-    public GameObject splatPrefab;
+    //public GameObject splatPrefab;
+    public ObjectPoolManager.ObjectPoolType poolType;
     //public Transform splatHolder;
     private List<ParticleCollisionEvent> collisionEvents = new List<ParticleCollisionEvent>();
 
@@ -40,7 +41,7 @@ public class SplatSpawner : MonoBehaviour
             }
 
             ObjectPoolManager.PoolRequestInfo info = ObjectPoolManager.CreatePoolInfo(
-                ObjectPoolManager.ObjectPoolType.Splat,
+                poolType,
                 GameManager.Instance.splatHolder,
                 collisionEvents[i].intersection,
                 null,
@@ -53,7 +54,7 @@ public class SplatSpawner : MonoBehaviour
 
             if (pooledSplat == null)
             {
-                Debug.LogError("Out of Splats");
+                //Debug.LogError("Out of Splats");
                 return;
             }
 
