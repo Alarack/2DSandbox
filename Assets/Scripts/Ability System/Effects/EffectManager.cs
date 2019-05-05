@@ -91,6 +91,16 @@ public class EffectManager {
         }
     }
 
+    public void BeginAllEffectDeliveries()
+    {
+        int count = effects.Count;
+
+        for (int i = 0; i < count; i++)
+        {
+            effects[i].BeginDelivery();
+        }
+    }
+
     public void DeactivateAllEffects()
     {
         int count = effects.Count;

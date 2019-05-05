@@ -220,15 +220,16 @@ public class StatusManager : MonoBehaviour {
                 {
                     if (StackStatus(status, existingStatus[i], status.SourceAbility) == true)
                     {
-                        //Debug.Log("StatusManager: Stacking a status");
+                        //Debug.Log("StatusManager: Stacking a status from " + status.SourceEffect.effectName + " on " + status.SourceAbility.abilityName);
                         return;
                     }
 
                 }
             }
 
-            //Debug.Log("StatusManager: Adding another status to the list");
+            //Debug.Log("StatusManager: Adding another status to the list from " + status.SourceEffect.effectName + " on " + status.SourceAbility.abilityName);
             statusContainer.AddStatus(status);
+            status.FirstApply();
         }
 
         private bool StackStatus(Status status, Status existingStatus, Ability sourceAbility)
@@ -251,6 +252,14 @@ public class StatusManager : MonoBehaviour {
                         {
                             existingStatus.RefreshDuration();
                         }
+                        return true;
+
+                    case Constants.EffectStackingMethod.NewInstance:
+                        return false;
+
+                    case Constants.EffectStackingMethod.StacksInfinite:
+
+                        existingStatus.Stack();
                         return true;
                 }
             }

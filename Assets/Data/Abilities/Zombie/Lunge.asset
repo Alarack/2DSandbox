@@ -54,6 +54,8 @@ MonoBehaviour:
       maxStacks: 0
       statusType: 0
       animBool: 
+      vfxName: 
+      vfxPosOffset: {x: 0, y: 0}
     projectileInfo:
       prefabName: 
       spreadType: 0
@@ -101,13 +103,15 @@ MonoBehaviour:
     effectType: 2
     durationType: 1
     statusTypeInfo:
-      stackMethod: 0
+      stackMethod: 2
       duration: 0.25
       interval: 0
       onCompleteEffectName: 
       maxStacks: 0
       statusType: 9
       animBool: 
+      vfxName: 
+      vfxPosOffset: {x: 0, y: 0}
     projectileInfo:
       prefabName: 
       spreadType: 0
@@ -146,7 +150,7 @@ MonoBehaviour:
       directionType: 5
       amount: 500
       angle: 35
-      resetCurrentVelocity: 1
+      resetCurrentVelocity: 0
   - effectName: Move Forward
     riderTarget: Deal Damage
     tags: 
@@ -162,6 +166,8 @@ MonoBehaviour:
       maxStacks: 0
       statusType: 9
       animBool: 
+      vfxName: 
+      vfxPosOffset: {x: 0, y: 0}
     projectileInfo:
       prefabName: 
       spreadType: 0

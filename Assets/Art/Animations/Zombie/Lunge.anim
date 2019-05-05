@@ -74,7 +74,7 @@ AnimationClip:
   m_Events:
   - time: 0.16666667
     functionName: RecieveAnimEvent
-    data: Lunge
+    data: Lunge,Deal Damage
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
     intParameter: 0

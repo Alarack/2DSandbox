@@ -79,7 +79,7 @@ public static class EffectZoneFactory {
 
         if (loadedPrefab == null)
         {
-            Debug.LogError("Could not load zone prefab");
+            Debug.LogError("Could not load zone prefab with " + zoneInfo.shape + " " + zoneInfo.size + " " + zoneInfo.zoneName);
             return null;
         }
 

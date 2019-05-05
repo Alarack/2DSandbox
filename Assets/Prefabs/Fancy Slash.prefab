@@ -201,7 +201,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7612004148973453543}
-  - component: {fileID: 3661793813834901896}
   - component: {fileID: 6489787889213541893}
   m_Layer: 0
   m_Name: Fancy Slash
@@ -225,29 +224,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &3661793813834901896
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2609638963112298962}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fd6791d5b189fa84e80fdd3d3d5dcd24, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  animTrigger: Attack1
-  animHelper: {fileID: 375768433801811371}
-  life: 0.75
-  impactEffect: {fileID: 1537843300550384207, guid: a65efe98f725fbc478399540f9250ca3,
-    type: 3}
-  mask:
-    serializedVersion: 2
-    m_Bits: 1024
-  damageValue: -10
-  xForce: 10
-  yForce: 5
 --- !u!61 &6489787889213541893
 BoxCollider2D:
   m_ObjectHideFlags: 0

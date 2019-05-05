@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: PlayerDash
   m_EditorClassIdentifier: 
   abilityName: Dash
+  baseWeight: 0
   activations:
   - activationMethod: 1
     activationConditions: 
@@ -20,6 +21,8 @@ MonoBehaviour:
     gainedOrLost: 0
     statChangeTarget: 0
     activationTime: 0
+    keyBind: 0
+  conditions: []
   abilityIcon: {fileID: 0}
   useDuration: 0
   procChance: 1
@@ -40,19 +43,32 @@ MonoBehaviour:
       maxStacks: 0
       statusType: 10
       animBool: Dashing
+      vfxName: Fire
+      vfxPosOffset: {x: 0, y: 0}
     projectileInfo:
       prefabName: 
       spreadType: 0
       projectileCount: 0
       error: 0
       burstDelay: 0
+      addInitialForce: 0
+      initialForce:
+        directionType: 0
+        amount: 0
+        angle: 0
+        resetCurrentVelocity: 0
     effectZoneInfo:
       shape: 0
       size: 0
       durationType: 0
+      instantZoneLife: 0
       duration: 0
       interval: 0
       removeEffectOnExit: 0
+      parentEffectToOrigin: 0
+      effectZoneImpactVFX: 
+      effectZoneSpawnVFX: 
+      zoneName: 
     animationTrigger: 
     layerMask:
       serializedVersion: 2
@@ -66,6 +82,8 @@ MonoBehaviour:
     addForceInfo:
       directionType: 0
       amount: 0
+      angle: 0
+      resetCurrentVelocity: 0
   recoveryData:
   - type: 1
     cooldown: 1

@@ -85,29 +85,41 @@ public class AnimHelper : MonoBehaviour
 
     public void RecieveAnimEvent(AnimationEvent param)
     {
-        //Debug.Log("Recieving " + param.stringParameter + " from anim event");
+        //Debug.Log("Recieving " + param.stringParameter /*+ " from anim event on " + gameObject.name*/);
 
         if (this.callback != null)
             callback();
 
-        SendEffectDeliveryEvent(param.stringParameter);
+        SendEffectDeliveryEvent(param);
     }
 
 
-    private void SendEffectDeliveryEvent(string abilityName)
+    private void SendEffectDeliveryEvent(AnimationEvent param)
     {
-        Ability targetAbility = GameManager.GetAbility(abilityName);
 
-        if (targetAbility == null)
+        string[] names = param.stringParameter.Split(',');
+
+        if (names.Length < 2)
             return;
 
-        EventData data = new EventData();
+        Ability targetAbility = GameManager.GetAbilityByOwner(gameObject, names[0]);
 
-        data.AddAbility(abilityName, targetAbility);
+        if(targetAbility == null)
+        {
+            //Debug.LogError("Anim helper couldn't find an ability with name: " + param.stringParameter);
+            return;
+        }
 
-        Debug.Log("sending an anim event with name " + abilityName + " Found: " + (targetAbility != null));
+        Effect targetEffect = targetAbility.EffectManager.GetEffectByName(names[1]);
 
-        EventGrid.EventManager.SendEvent(Constants.GameEvent.AnimEvent, data);
+        if (targetEffect == null)
+        {
+            //Debug.LogError("Anim helper couldn't find an effect on " + targetAbility.abilityName + " with name: " + names[1]);
+            return;
+        }
+
+        targetEffect.BeginDelivery();
+
     }
 
 }

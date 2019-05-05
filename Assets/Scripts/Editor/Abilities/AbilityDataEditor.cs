@@ -257,6 +257,11 @@ public class AbilityDataEditor : Editor {
         entry.interval = EditorHelper.FloatField("Interval (0 = None)", entry.interval);
 
         EditorGUILayout.Separator();
+
+        EditorGUILayout.BeginHorizontal();
+        entry.vfxName = EditorGUILayout.TextField("VFX Name", entry.vfxName);
+        entry.vfxPosOffset = EditorHelper.Vector2Field(entry.vfxPosOffset);
+        EditorGUILayout.EndHorizontal();
         entry.onCompleteEffectName = EditorGUILayout.TextField("OnComplete Effect", entry.onCompleteEffectName);
 
 

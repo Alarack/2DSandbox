@@ -38,7 +38,7 @@ public class EffectAddForce : Effect
     protected override bool CreateAndRegisterStatus(GameObject target)
     {
         StatusMovementAffecting newStatus = new StatusMovementAffecting(statusInfo, forceInfo);
-        //Debug.Log(newStatus.statusType + " has been made");
+        //Debug.Log(newStatus.statusType + " has been made from " + effectName + " on " + parentAbility.abilityName);
 
         activeStatus.Add(newStatus);
         StatusManager.AddStatus(target, newStatus);
@@ -51,7 +51,7 @@ public class EffectAddForce : Effect
     {
         Vector2 forceToAdd = forceInfo.CalcDirectionAndForce(target, Source);
 
-        Debug.Log("adding " + forceToAdd);
+        //Debug.Log("adding " + forceToAdd);
 
         if (forceInfo.resetCurrentVelocity == true)
             target.Entity().Movement.MyBody.velocity = Vector2.zero;
@@ -105,6 +105,8 @@ public struct AddForceInfo {
         {
             case DirectionType.AwayInLine:
                 result = (target.transform.position - source.transform.position).normalized;
+
+                Debug.Log((result * amount) + " is being applied");
                 break;
 
             case DirectionType.Up:
@@ -126,7 +128,8 @@ public struct AddForceInfo {
             case DirectionType.CustomAngle:
                 Vector2 conversion = TargetingTools.DegreeToVector2(angle);
 
-                conversion = source.Entity().Movement.Facing == EntityMovement.FacingDirection.Left ? new Vector2(-conversion.x, conversion.y) : conversion;
+                if(source != null)
+                    conversion = source.Entity().Movement.Facing == EntityMovement.FacingDirection.Left ? new Vector2(-conversion.x, conversion.y) : conversion;
 
                 result = conversion;
 

@@ -29,6 +29,31 @@ public static class VisualEffectLoader  {
         return result;
     }
 
+    public static GameObject LoadVisualEffect(string effectPath, string effectName)
+    {
+        GameObject result = Resources.Load(effectPath + "/" + effectName) as GameObject;
+        return result;
+    }
+
+    public static void MakeFloatingText(string text, Vector2 location)
+    {
+
+        GameObject loadedText = Resources.Load("UI/Floating Text") as GameObject;
+
+        if(loadedText == null)
+        {
+            Debug.Log("Couldn't find floating test asset");
+            return;
+        }
+
+        GameObject activeText = GameObject.Instantiate(loadedText, location, Quaternion.identity) as GameObject;
+
+        FloatingText textScript = activeText.GetComponent<FloatingText>();
+        textScript.Initialize(text, location);
+
+
+    }
+
 
 
 

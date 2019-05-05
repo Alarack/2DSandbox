@@ -19,7 +19,7 @@ public static class GameObjectExtensions {
             result = projectile.ProjectileStats;
 
 
-        if(result == null)
+        if(result == null && go != null)
         {
             Debug.LogWarning(go.name + " has no stats");
         }
@@ -29,11 +29,17 @@ public static class GameObjectExtensions {
 
     public static Entity Entity(this GameObject go)
     {
+        if (go == null)
+            return null;
+
         return go.GetComponentInParent<Entity>();
     }
 
     public static Projectile Projectile(this GameObject go)
     {
+        if (go == null)
+            return null;
+
         return go.GetComponentInParent<Projectile>();
     }
 

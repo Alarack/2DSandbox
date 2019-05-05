@@ -49,6 +49,9 @@ public class Effect
     protected EffectZone activeZone;
     protected List<Status> activeStatus = new List<Status>();
 
+    protected bool animStarted;
+    protected bool pendingUnregister;
+
     public Effect()
     {
 
@@ -79,8 +82,7 @@ public class Effect
 
     public void RemoveEventListeners()
     {
-        Debug.Log("removing listeners for " + effectName);
-        EventGrid.EventManager.RemoveMyListeners(this);
+
     }
 
 
@@ -91,30 +93,9 @@ public class Effect
 
     public virtual void Activate()
     {
-        if (string.IsNullOrEmpty(animationTrigger) == false)
-        {
-            Debug.Log(effectName + " is registering a listern for anim events");
-            EventGrid.EventManager.RegisterListener(Constants.GameEvent.AnimEvent, OnAnimEvent);
-        }
-
-
-        Debug.Log("Activating " + effectName);
         PlayEffectAnim();
     }
 
-    private void OnAnimEvent(EventData data)
-    {
-        Ability a = data.GetAbility(parentAbility.abilityName);
-
-        Debug.Log("Reciving an anim event for " + parentAbility.abilityName + " Found: " + (a != null));
-
-        //Debug.Log(a.abilityName + "has sent an event");
-
-        if (a != null)
-        {
-            BeginDelivery();
-        }
-    }
 
     public virtual bool IsFromSameSource(Ability ability)
     {
@@ -123,8 +104,7 @@ public class Effect
 
     public virtual void BeginDelivery()
     {
-        Debug.Log("begining delivery for " + effectName);
-
+        //Debug.Log("begining delivery for " + effectName + " on " + parentAbility.abilityName);
         switch (deliveryMethod)
         {
             case EffectDeliveryMethod.Instant:
@@ -164,13 +144,6 @@ public class Effect
 
                 break;
         }
-
-        if (string.IsNullOrEmpty(animationTrigger) == false)
-        {
-            //Debug.Log("Removeing a listerner for " + parentAbility.abilityName);
-            EventGrid.EventManager.RemoveListener(Constants.GameEvent.AnimEvent, OnAnimEvent);
-        }
-
     }
 
     #region PROJECTILE CREATION
@@ -228,7 +201,8 @@ public class Effect
         ApplyRiderEffects(target);
         SendEffectAppliedEvent(target);
 
-        //Debug.Log(parentAbility.abilityName + " is applying an effect");
+
+            //Debug.Log("APPLY: " + parentAbility.abilityName + " is applying an effect called " + effectName + " to " + target.name);
 
     }
 
@@ -285,21 +259,14 @@ public class Effect
     public virtual void PlayEffectAnim()
     {
         //TODO: this assumes the source is always an entity, it could be a projectile
-        bool animStarted = Source.Entity().AnimHelper.PlayAnimTrigger(animationTrigger); // Animation trigger will start the delivery at the right time.
-        //Debug.Log(parentAbility.abilityName + " is trying to play an anim for " + effectName);
+        animStarted = Source.Entity().AnimHelper.PlayAnimTrigger(animationTrigger); // Animation trigger will start the delivery at the right time.
 
-        if (animStarted == false)
-        { // Start Delivery Instantly if there isn't an animator.
-            //Debug.Log("anim not found on " + effectName + ", begning delivery immediately for " + effectName);
+        if (animStarted == false)// Start Delivery Instantly if there isn't an animation.
+        {
+            //if (Source.Entity() is EntityEnemy)
+            //    Debug.Log("anim not found on " + effectName + ", begining delivery immediately for " + effectName);
             BeginDelivery();
         }
-        //else
-        //{
-        //    Debug.Log(parentAbility.abilityName + " has started an animation for " + effectName);
-        //}
-
-        //else
-        //    Source.Entity().AnimHelper.SetAnimEventAction(BeginDelivery);
     }
 
 

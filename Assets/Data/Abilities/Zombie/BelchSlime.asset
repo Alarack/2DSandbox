@@ -35,14 +35,14 @@ MonoBehaviour:
     statRatioAmount: 0
     hasStatusType: 0
   abilityIcon: {fileID: 0}
-  useDuration: 0.25
+  useDuration: 2
   procChance: 1
   overrideOtherAbilities: 0
   effectData:
   - effectName: Shoot projectile
     riderTarget: 
     tags: 
-    effectOrigin: 5
+    effectOrigin: 6
     deliveryMethod: 2
     effectType: 1
     durationType: 0
@@ -54,6 +54,8 @@ MonoBehaviour:
       maxStacks: 0
       statusType: 0
       animBool: 
+      vfxName: 
+      vfxPosOffset: {x: 0, y: 0}
     projectileInfo:
       prefabName: Zombie Spit Projectile
       spreadType: 0
@@ -101,13 +103,15 @@ MonoBehaviour:
     effectType: 1
     durationType: 1
     statusTypeInfo:
-      stackMethod: 1
-      duration: 1.75
+      stackMethod: 3
+      duration: 2
       interval: 0
       onCompleteEffectName: 
       maxStacks: 1
       statusType: 9
       animBool: 
+      vfxName: 
+      vfxPosOffset: {x: 0, y: 0}
     projectileInfo:
       prefabName: 
       spreadType: 0

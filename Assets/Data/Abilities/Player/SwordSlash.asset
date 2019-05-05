@@ -95,7 +95,7 @@ MonoBehaviour:
       interval: 0
       onCompleteEffectName: 
       maxStacks: 0
-      statusType: 9
+      statusType: 11
       animBool: 
     projectileInfo:
       prefabName: 

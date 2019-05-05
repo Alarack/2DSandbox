@@ -21,6 +21,9 @@ public class Status  {
 
     protected Effect onCompleteEffect;
 
+    protected string vfxName;
+    protected Vector2 vfxOffset;
+    protected GameObject activeVFX;
 
     public Status(StatusInfo statusInfo)
     {
@@ -50,6 +53,10 @@ public class Status  {
         StackCount = 1;
         stackMethod = info.typeInfo.stackMethod;
         AnimBoolName = info.typeInfo.animBool;
+        vfxName = info.typeInfo.vfxName;
+        vfxOffset = info.typeInfo.vfxPosOffset;
+
+        //CreateVFX();
     }
 
 
@@ -65,11 +72,13 @@ public class Status  {
 
     public virtual void FirstApply()
     {
+        CreateVFX();
         Tick();
     }
 
     public virtual void Stack()
     {
+        RefreshDuration();
         StackCount++;
     }
 
@@ -81,6 +90,17 @@ public class Status  {
     protected virtual void CleanUp()
     {
         StatusManager.RemoveStatus(Target, this);
+
+        if (activeVFX != null)
+        {
+            activeVFX.transform.SetParent(null, true);
+            ParticleSystem p = activeVFX.GetComponent<ParticleSystem>();
+            if (p != null)
+                p.Stop();
+
+            GameObject.Destroy(activeVFX, 2f);
+        }
+
 
         if (onCompleteEffect != null)
         {
@@ -116,7 +136,33 @@ public class Status  {
             intervalTimer.UpdateClock();
     }
 
+    public virtual void CreateVFX()
+    {
+        if (string.IsNullOrEmpty(vfxName) == true)
+            return;
 
+        //if (activeVFX != null)
+        //    return;
+
+
+        GameObject loadedVFX = VisualEffectLoader.LoadVisualEffect("Particles", vfxName);
+
+        if(loadedVFX == null)
+        {
+            Debug.LogError("Status couldn't load a vfx with name " + vfxName);
+            return;
+        }
+
+
+        bool facingLeft = Target.Entity().Movement.Facing == EntityMovement.FacingDirection.Left;
+        float xOffset = facingLeft == true ? vfxOffset.x * -1 : vfxOffset.x;
+
+        Vector2 offset = new Vector2(xOffset, vfxOffset.y);
+
+        activeVFX = GameObject.Instantiate(loadedVFX, Target.transform);
+        activeVFX.transform.localPosition = Vector3.zero + (Vector3)offset;
+
+    }
 
 }
 
@@ -176,8 +222,11 @@ public struct StatusTypeInfo {
     public int maxStacks;
     public StatusType statusType;
     public string animBool;
+    public string vfxName;
+    public Vector2 vfxPosOffset;
 
-    public StatusTypeInfo(StatusType statusType, float duration, Constants.EffectStackingMethod stackMethod, float interval = 0f, int maxStacks = 1, string onCompleteEffectName = "", string animBool = "")
+    public StatusTypeInfo(StatusType statusType, float duration, Constants.EffectStackingMethod stackMethod, Vector2 vfxPosOffset, string vfxName = "",
+         float interval = 0f, int maxStacks = 1, string onCompleteEffectName = "", string animBool = "")
     {
         this.statusType = statusType;
         this.maxStacks = maxStacks;
@@ -186,6 +235,8 @@ public struct StatusTypeInfo {
         this.interval = interval;
         this.stackMethod = stackMethod;
         this.animBool = animBool;
+        this.vfxName = vfxName;
+        this.vfxPosOffset = vfxPosOffset;
     }
 
 

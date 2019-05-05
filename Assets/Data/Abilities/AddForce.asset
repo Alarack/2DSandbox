@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: AddForce
   m_EditorClassIdentifier: 
   abilityName: Add Force
+  baseWeight: 0
   activations:
   - activationMethod: 1
     activationConditions: 
@@ -20,12 +21,14 @@ MonoBehaviour:
     gainedOrLost: 0
     statChangeTarget: 0
     activationTime: 0
+    keyBind: 0
+  conditions: []
   abilityIcon: {fileID: 0}
   useDuration: 0
   procChance: 1
   overrideOtherAbilities: 0
   effectData:
-  - effectName: 
+  - effectName: Self Movement
     riderTarget: 
     tags: 
     effectOrigin: 0
@@ -40,12 +43,15 @@ MonoBehaviour:
       maxStacks: 0
       statusType: 9
       animBool: Dashing
+      vfxName: Fire
+      vfxPosOffset: {x: 0.3, y: -0.46}
     projectileInfo:
       prefabName: 
       spreadType: 0
       projectileCount: 0
       error: 0
       burstDelay: 0
+      addInitialForce: 0
       initialForce:
         directionType: 0
         amount: 0
@@ -55,12 +61,14 @@ MonoBehaviour:
       shape: 0
       size: 0
       durationType: 0
+      instantZoneLife: 0
       duration: 0
       interval: 0
       removeEffectOnExit: 0
       parentEffectToOrigin: 0
       effectZoneImpactVFX: 
       effectZoneSpawnVFX: 
+      zoneName: 
     animationTrigger: 
     layerMask:
       serializedVersion: 2
@@ -74,8 +82,176 @@ MonoBehaviour:
     addForceInfo:
       directionType: 5
       amount: 1200
-      angle: 45
+      angle: 25
       resetCurrentVelocity: 1
+  - effectName: Kick
+    riderTarget: 
+    tags: 
+    effectOrigin: 5
+    deliveryMethod: 1
+    effectType: 2
+    durationType: 0
+    statusTypeInfo:
+      stackMethod: 0
+      duration: 0
+      interval: 0
+      onCompleteEffectName: 
+      maxStacks: 0
+      statusType: 0
+      animBool: 
+      vfxName: 
+      vfxPosOffset: {x: 0, y: 0}
+    projectileInfo:
+      prefabName: 
+      spreadType: 0
+      projectileCount: 0
+      error: 0
+      burstDelay: 0
+      addInitialForce: 0
+      initialForce:
+        directionType: 0
+        amount: 0
+        angle: 0
+        resetCurrentVelocity: 0
+    effectZoneInfo:
+      shape: 4
+      size: 3
+      durationType: 0
+      instantZoneLife: 0.5
+      duration: 0
+      interval: 0
+      removeEffectOnExit: 0
+      parentEffectToOrigin: 1
+      effectZoneImpactVFX: 
+      effectZoneSpawnVFX: 
+      zoneName: LungeBox
+    animationTrigger: 
+    layerMask:
+      serializedVersion: 2
+      m_Bits: 1024
+    adjInfo:
+      adjustmentValue: 0
+      targetStat: 0
+      modType: 0
+      permanent: 0
+      options: 
+    addForceInfo:
+      directionType: 5
+      amount: 750
+      angle: 15
+      resetCurrentVelocity: 1
+  - effectName: KickDamage
+    riderTarget: Kick
+    tags: 
+    effectOrigin: 0
+    deliveryMethod: 5
+    effectType: 1
+    durationType: 0
+    statusTypeInfo:
+      stackMethod: 0
+      duration: 0
+      interval: 0
+      onCompleteEffectName: 
+      maxStacks: 0
+      statusType: 0
+      animBool: 
+      vfxName: 
+      vfxPosOffset: {x: 0, y: 0}
+    projectileInfo:
+      prefabName: 
+      spreadType: 0
+      projectileCount: 0
+      error: 0
+      burstDelay: 0
+      addInitialForce: 0
+      initialForce:
+        directionType: 0
+        amount: 0
+        angle: 0
+        resetCurrentVelocity: 0
+    effectZoneInfo:
+      shape: 0
+      size: 0
+      durationType: 0
+      instantZoneLife: 0
+      duration: 0
+      interval: 0
+      removeEffectOnExit: 0
+      parentEffectToOrigin: 0
+      effectZoneImpactVFX: 
+      effectZoneSpawnVFX: 
+      zoneName: 
+    animationTrigger: 
+    layerMask:
+      serializedVersion: 2
+      m_Bits: 1024
+    adjInfo:
+      adjustmentValue: -3
+      targetStat: 1
+      modType: 0
+      permanent: 1
+      options: 
+    addForceInfo:
+      directionType: 0
+      amount: 0
+      angle: 0
+      resetCurrentVelocity: 0
+  - effectName: KickBurn
+    riderTarget: Kick
+    tags: 
+    effectOrigin: 0
+    deliveryMethod: 5
+    effectType: 1
+    durationType: 2
+    statusTypeInfo:
+      stackMethod: 4
+      duration: 5
+      interval: 1
+      onCompleteEffectName: 
+      maxStacks: 0
+      statusType: 2
+      animBool: 
+      vfxName: Fire
+      vfxPosOffset: {x: 0, y: 0}
+    projectileInfo:
+      prefabName: 
+      spreadType: 0
+      projectileCount: 0
+      error: 0
+      burstDelay: 0
+      addInitialForce: 0
+      initialForce:
+        directionType: 0
+        amount: 0
+        angle: 0
+        resetCurrentVelocity: 0
+    effectZoneInfo:
+      shape: 0
+      size: 0
+      durationType: 0
+      instantZoneLife: 0
+      duration: 0
+      interval: 0
+      removeEffectOnExit: 0
+      parentEffectToOrigin: 0
+      effectZoneImpactVFX: 
+      effectZoneSpawnVFX: 
+      zoneName: 
+    animationTrigger: 
+    layerMask:
+      serializedVersion: 2
+      m_Bits: 1024
+    adjInfo:
+      adjustmentValue: -1
+      targetStat: 1
+      modType: 0
+      permanent: 1
+      options: 
+    addForceInfo:
+      directionType: 0
+      amount: 0
+      angle: 0
+      resetCurrentVelocity: 0
   recoveryData:
   - type: 1
     cooldown: 1

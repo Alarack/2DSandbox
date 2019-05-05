@@ -59,6 +59,9 @@ public class AIBrain : MonoBehaviour
                 return;
             }
 
+            if (abilities[i].GetActivationType(Constants.AbilityActivationMethod.Manual) == false)
+                continue;
+
             if (abilities[i].MeetsRequiredConditions(sensor.ClosestTarget) == false)
                 continue;
 

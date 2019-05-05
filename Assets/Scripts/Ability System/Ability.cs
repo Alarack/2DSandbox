@@ -7,11 +7,12 @@ using EffectTag = Constants.EffectTag;
 using AbilityActivationMethod = Constants.AbilityActivationMethod;
 
 [System.Serializable]
-public class Ability {
+public class Ability
+{
 
     public string abilityName;
-    
-    
+
+
     //public List<AbilityActivationMethod> triggers = new List<AbilityActivationMethod>();
     public List<AbilityActivationInfo> activations = new List<AbilityActivationInfo>();
     public List<AbilityCondition> conditions = new List<AbilityCondition>();
@@ -138,6 +139,7 @@ public class Ability {
         switch (activationInfo.activationMethod)
         {
             case AbilityActivationMethod.Timed:
+                //Debug.Log(" a timed ability is seting up its timer: " + activationInfo.activationTime);
                 activationInfo.activaionTimer = new Timer(activationInfo.activationTime, TimedActivate, true);
                 break;
 
@@ -278,6 +280,7 @@ public class Ability {
 
     public void TimedActivate()
     {
+        Debug.Log("Activating a timed ability " + abilityName);
         ActivateViaSpecificConditionSet(AbilityActivationMethod.Timed);
     }
 
@@ -293,15 +296,6 @@ public class Ability {
         Activate(conditions);
     }
 
-    public void NPCActivate(GameObject target)
-    {
-        bool canActivate = MeetsRequiredConditions(target);
-        if (canActivate == false)
-            return;
-
-        Activate();
-    }
-
 
     public bool Activate(params Constants.AbilityActivationCondition[] conditions)
     {
@@ -313,7 +307,8 @@ public class Ability {
 
         EffectManager.ActivateAllEffects();
         InUse = true;
-        Debug.Log(abilityName + " has been activated");
+
+        //Debug.Log(abilityName + " has been activated");
 
         return true;
     }
@@ -376,7 +371,8 @@ public class Ability {
             return result;
         }
 
-        if (Source.Entity() is EntityEnemy) {
+        if (Source.Entity() is EntityEnemy)
+        {
 
             EntityEnemy baddie = Source.Entity() as EntityEnemy;
 
@@ -385,7 +381,7 @@ public class Ability {
         }
         else
         {
-            if(MeetsRequiredConditions(null) == false)
+            if (MeetsRequiredConditions(null) == false)
                 result = false;
         }
 
@@ -426,7 +422,7 @@ public class Ability {
     {
         AbilityActivationInfo info;
 
-        if(GetActivator(AbilityActivationMethod.Manual, out info))
+        if (GetActivator(AbilityActivationMethod.Manual, out info))
         {
             return info.keyBind;
         }
@@ -438,7 +434,8 @@ public class Ability {
 }
 
 [System.Serializable]
-public struct AbilityActivationInfo {
+public class AbilityActivationInfo
+{
     public AbilityActivationMethod activationMethod;
     public List<Constants.AbilityActivationCondition> activationConditions;
 
@@ -459,16 +456,20 @@ public struct AbilityActivationInfo {
     public void ManagedUpdate()
     {
         if (activaionTimer != null)
+        {
             activaionTimer.UpdateClock();
+        }
     }
 
 }
 
 
 [System.Serializable]
-public class AbilityCondition {
+public class AbilityCondition
+{
 
-    public enum AbilityConditionType {
+    public enum AbilityConditionType
+    {
         DistanceFromTarget, //Could be sub class for both distance and above, below, left right, etc..
         StatValue, //could be target stat instead of own stat
         StatRatio,

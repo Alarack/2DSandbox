@@ -38,22 +38,56 @@ public static class StatAdjustmentManager {
 
     public static StatModifier ApplyTrackedStatMod(StatCollection source, StatCollection target, StatType stat, float value, StatModificationType modType, params StatModifierOption[] statOptions)
     {
-        StatModifier mod = target.ApplyAndReturnTrackedMod(stat, value, modType, source.Owner, statOptions);
-        SendStatChangeEvent(source.Owner, target.Owner, stat, value);
-        return mod;
+        GameObject s = source != null ? source.Owner : null;
+        GameObject t = target != null ? target.Owner : null;
+        StatModifier mod = target.ApplyAndReturnTrackedMod(stat, value, modType, s, statOptions);
+
+        if (t != null)
+        {
+            SendStatChangeEvent(s, t, stat, value);
+            return mod;
+        }
+        else
+        {
+            Debug.LogWarning("a stat mod: " + mod + " could not be added to a target because it was null");
+            return null;
+        }
+
 
     }
 
     public static void ApplyTrackedStatMod(StatCollection source, StatCollection target, StatType stat, StatModifier mod, params StatModifierOption[] statOptions)
     {
-        target.ApplyTrackedMod(stat, mod, source.Owner, statOptions);
-        SendStatChangeEvent(source.Owner, target.Owner, stat, mod.Value);
+        GameObject s = source != null ? source.Owner : null;
+        GameObject t = target != null ? target.Owner : null;
+
+        if(t != null)
+        {
+            target.ApplyTrackedMod(stat, mod, s, statOptions);
+            SendStatChangeEvent(source.Owner, t, stat, mod.Value);
+        }
+        else
+        {
+            Debug.LogWarning("a stat mod: " + mod + " could not be added to a target because it was null");
+        }
+
     }
 
     public static void RemoveTrackedStatMod(StatCollection source, StatCollection target, StatType stat, StatModifier mod, params StatModifierOption[] statOptions)
     {
-        target.RemoveTrackedMod(stat, mod, source.Owner, statOptions);
-        SendStatChangeEvent(source.Owner, target.Owner, stat, -mod.Value);
+        GameObject s = source != null ? source.Owner : null;
+        GameObject t = target != null ? target.Owner : null;
+
+        if(t != null)
+        {
+            target.RemoveTrackedMod(stat, mod, s, statOptions);
+            SendStatChangeEvent(source.Owner, t, stat, -mod.Value);
+        }
+        else
+        {
+            Debug.LogWarning("a stat mod: " + mod + " could not be removed from a target because it was null");
+        }
+
     }
 
 
@@ -70,8 +104,13 @@ public static class StatAdjustmentManager {
 
         EventGrid.EventManager.SendEvent(Constants.GameEvent.StatChanged, data);
 
+        if(stat == StatType.Health  && target != null)
+        {
+            VisualEffectLoader.MakeFloatingText(value.ToString(), target.transform.position);
 
-        //Debug.Log(source.name + " has altered " + stat + " on " + target.name + " by " + value);
+            //Debug.Log(source.name + " has altered " + stat + " on " + target.name + " by " + value);
+        }
+
     }
 
 }

@@ -122,6 +122,7 @@ public class Constants  {
         Immobilize = 8,
         MovementAffecting = 9,
         ForceMaxSpeed = 10,
+        Knockback = 11
 
     }
 
@@ -129,6 +130,8 @@ public class Constants  {
         None = 0,
         LimitedStacks = 1,
         StacksWithOtherAbilities = 2,
+        NewInstance = 3,
+        StacksInfinite = 4
 
     }
 

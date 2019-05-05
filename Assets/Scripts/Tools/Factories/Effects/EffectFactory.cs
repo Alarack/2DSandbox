@@ -11,7 +11,7 @@ public static class EffectFactory {
 
     public static Effect CreateEffect(Ability parent, EffectData data)
     {
-        Effect result = new Effect(); 
+        Effect result = new Effect(parent); 
 
 
 

@@ -63,8 +63,19 @@ public class EntityMovement : MonoBehaviour {
         }
 
 
-        if (StatusManager.CheckForStatus(Owner.gameObject, Constants.StatusType.MovementAffecting) == true)
+        bool underMovementAffecting = StatusManager.CheckForStatus(Owner.gameObject, Constants.StatusType.MovementAffecting);
+        bool underKnockback = StatusManager.CheckForStatus(Owner.gameObject, Constants.StatusType.Knockback);
+
+        if (underMovementAffecting == true || underKnockback == true)
+        {
+            //if(Owner is EntityEnemy)
+            //{
+            //    Debug.Log(" I havea movement affecting status");
+            //}
+
             return;
+        }
+
 
         if (currentHorizontalDirection == 0f)
         {
@@ -79,6 +90,8 @@ public class EntityMovement : MonoBehaviour {
                 Owner.AnimHelper.PlayWalk();
         }
 
+        //if (Owner is EntityEnemy)
+        //    Debug.Log("No movement affecting status, so moving normal");
 
         MyBody.velocity = new Vector2(currentHorizontalDirection * Speed, MyBody.velocity.y);
     }

@@ -24,12 +24,15 @@ public class StatusMovementAffecting : Status {
     {
         Vector2 knockback = forceInfo.CalcDirectionAndForce(Target, Source);
 
-        if (forceInfo.resetCurrentVelocity == true)
-            Target.Entity().Movement.MyBody.velocity = Vector2.zero;
+        if(Target != null)
+        {
+            if (forceInfo.resetCurrentVelocity == true)
+                Target.Entity().Movement.MyBody.velocity = Vector2.zero;
 
-        //Debug.Log(knockback + " has been applied");
+            //Debug.Log(knockback + " has been applied from " + SourceEffect.effectName + " on " + SourceAbility.abilityName);
 
-        Target.Entity().Movement.MyBody.AddForce(knockback);
+            Target.Entity().Movement.MyBody.AddForce(knockback);
+        }
     }
 
 
@@ -42,7 +45,8 @@ public class StatusMovementAffecting : Status {
     {
         base.Stack();
 
-        forceInfo.amount += baseForceAmount;
+        //forceInfo.amount += baseForceAmount;
+        ApplyForce();
 
     }
 

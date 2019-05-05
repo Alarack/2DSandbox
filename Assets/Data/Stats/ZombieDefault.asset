@@ -19,4 +19,4 @@ MonoBehaviour:
     baseValue: 2
   - variant: 2
     statType: 1
-    baseValue: 50
+    baseValue: 30
