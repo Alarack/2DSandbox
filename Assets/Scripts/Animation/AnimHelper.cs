@@ -7,57 +7,57 @@ using LL.Events;
 public class AnimHelper : MonoBehaviour
 {
 
-    private Animator myAnim;
+    public Animator Anim { get; private set; }
     private Action callback;
 
 
     private void Awake()
     {
-        myAnim = GetComponent<Animator>();
+        Anim = GetComponentInChildren<Animator>();
     }
 
 
 
     public void PlayWalk()
     {
-        if (myAnim == null)
+        if (Anim == null)
             return;
 
-        if (myAnim.GetBool("Walking") == true)
+        if (Anim.GetBool("Walking") == true)
             return;
 
-        myAnim.SetBool("Walking", true);
+        Anim.SetBool("Walking", true);
     }
 
     public void StopWalk()
     {
-        if (myAnim == null)
+        if (Anim == null)
             return;
 
-        if (myAnim.GetBool("Walking") == false)
+        if (Anim.GetBool("Walking") == false)
             return;
 
-        myAnim.SetBool("Walking", false);
+        Anim.SetBool("Walking", false);
     }
 
 
     public void PlayOrStopAnimBool(string boolName, bool play = true)
     {
-        if (myAnim == null)
+        if (Anim == null)
             return;
 
-        if (myAnim.GetBool(boolName) == false && play == false)
+        if (Anim.GetBool(boolName) == false && play == false)
             return;
 
-        if (myAnim.GetBool(boolName) == true && play == true)
+        if (Anim.GetBool(boolName) == true && play == true)
             return;
 
-        myAnim.SetBool(boolName, play);
+        Anim.SetBool(boolName, play);
     }
 
     public bool PlayAnimTrigger(string trigger)
     {
-        if (myAnim == null)
+        if (Anim == null)
             return false;
 
 
@@ -66,7 +66,7 @@ public class AnimHelper : MonoBehaviour
 
         try
         {
-            myAnim.SetTrigger(trigger);
+            Anim.SetTrigger(trigger);
             return true;
         }
         catch (Exception e)
@@ -118,7 +118,7 @@ public class AnimHelper : MonoBehaviour
             return;
         }
 
-        targetEffect.BeginDelivery();
+        targetEffect.BeginDelivery(targetEffect.weaponDelivery);
 
     }
 

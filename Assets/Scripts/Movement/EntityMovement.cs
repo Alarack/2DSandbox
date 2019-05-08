@@ -120,6 +120,75 @@ public class EntityMovement : MonoBehaviour {
 
     }
 
+    protected void SwapWeaponSide()
+    {
+        //Debug.Log("Swaping weapon side");
+
+        if (Owner.CurrentWeapon == null)
+        {
+            //Debug.Log("weapon is null");
+            return;
+        }
+
+
+        EffectOriginPoint originPoint = Owner.EffectDelivery.GetCurrentWeaponPoint() ?? new EffectOriginPoint();
+
+
+        //Debug.Log(originPoint.originType + " is the origion point type");
+
+        if (originPoint.point != null)
+        {
+            switch (originPoint.originType)
+            {
+                case Constants.EffectOrigin.RightHand:
+
+                    if(Owner.Movement.Facing == FacingDirection.Left)
+                    {
+                        Owner.CurrentWeapon.transform.SetParent(Owner.EffectDelivery.GetOriginPoint(Constants.EffectOrigin.LeftHand), false);
+                        Owner.CurrentWeapon.transform.localScale = new Vector3(
+                            Owner.CurrentWeapon.transform.localScale.x * -1,
+                            Owner.CurrentWeapon.transform.localScale.y,
+                            Owner.CurrentWeapon.transform.localScale.z);
+                    }
+
+                    break;
+
+                case Constants.EffectOrigin.LeftHand:
+                    if(Owner.Movement.Facing == FacingDirection.Right)
+                    {
+                        Owner.CurrentWeapon.transform.SetParent(Owner.EffectDelivery.GetOriginPoint(Constants.EffectOrigin.RightHand), false);
+                        Owner.CurrentWeapon.transform.localScale = new Vector3(
+                            Owner.CurrentWeapon.transform.localScale.x * -1,
+                            Owner.CurrentWeapon.transform.localScale.y,
+                            Owner.CurrentWeapon.transform.localScale.z);
+                    }
+
+                    break;
+
+
+                case Constants.EffectOrigin.CharacterFront:
+                    Transform target = null;
+
+                    Transform left = Owner.EffectDelivery.GetOriginPoint(Constants.EffectOrigin.LeftHand);
+                    Transform right = Owner.EffectDelivery.GetOriginPoint(Constants.EffectOrigin.RightHand);
+
+                    target = Owner.Movement.Facing == EntityMovement.FacingDirection.Left ? left : right;
+
+
+                    Debug.Log(target.gameObject.name + " is where I should be");
+                    Debug.Log(originPoint.point + " is where I am");
+
+                    if (originPoint.point != target)
+                    {
+                        Debug.Log("wrong side");
+                    }
+
+                    break;
+            }
+        }
+
+    }
+
 
     public virtual void SetFacing(FacingDirection direction)
     {

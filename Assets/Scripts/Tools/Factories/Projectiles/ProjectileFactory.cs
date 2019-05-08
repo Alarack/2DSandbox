@@ -20,7 +20,7 @@ public static class ProjectileFactory {
         }
         else
         {
-            Debug.Log("Add in moust position projectiles spawns");
+            Debug.Log("Add in mouse position projectiles spawns");
             spawnPoint = source.transform.position;
         }
 
@@ -43,7 +43,14 @@ public static class ProjectileFactory {
             case ProjectileSpreadType.Random:
                 float error = Random.Range(info.error, -info.error);
 
-                projectile.transform.rotation = Quaternion.Euler(projectile.transform.rotation.x, error, projectile.transform.rotation.z);
+
+                projectile.transform.rotation = Quaternion.Euler(
+                    projectile.transform.rotation.x, 
+                    projectile.transform.rotation.y, 
+                    error);
+
+
+                //projectile.transform.rotation = Quaternion.Euler(projectile.transform.rotation.x, error, projectile.transform.rotation.z);
                 break;
 
             case ProjectileSpreadType.EvenlySpread:
@@ -51,9 +58,30 @@ public static class ProjectileFactory {
                 float errorRange = info.error;
                 float percentOfRange = info.projectileCount / errorRange;
 
-                float offset = currentProjectile == 0 && info.projectileCount.IsOdd() ? 0 : (currentProjectile + 1) * percentOfRange;
+                float newOffset = /*(currentProjectile + 1) +*/ info.error /** percentOfRange*/;
+                if (currentProjectile == 0 && info.projectileCount.IsOdd())
+                {
+                    newOffset = 0f;
+                }
 
-                projectile.transform.rotation = Quaternion.Euler(projectile.transform.rotation.x, offset, projectile.transform.rotation.z);
+                if (currentProjectile.IsOdd())
+                {
+                    //newOffset = (currentProjectile - 1) + info.error;
+                    newOffset *= -1f;
+                }
+
+
+                float offset = currentProjectile == 0 && info.projectileCount.IsOdd() ? 0 : (currentProjectile) * percentOfRange;
+
+                Debug.Log((newOffset)+ " is the current offset");
+
+                projectile.transform.rotation = Quaternion.Euler(
+                    projectile.transform.rotation.x,
+                    projectile.transform.rotation.y, 
+                    newOffset);
+
+
+                //projectile.transform.rotation = Quaternion.Euler(projectile.transform.rotation.x, offset, projectile.transform.rotation.z);
 
                 break;
         }

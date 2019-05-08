@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyMovement : EntityMovement {
+public class EnemyMovement : EntityMovement
+{
 
     public float zombieWanderInterval;
     [Range(0f, 1f)]
@@ -65,18 +66,17 @@ public class EnemyMovement : EntityMovement {
         if (currentHorizontalDirection < 0 && Owner.SpriteRenderer.flipX == false)
         {
             Owner.SpriteRenderer.flipX = true;
+            SwapWeaponSide();
         }
 
         if (currentHorizontalDirection > 0 && Owner.SpriteRenderer.flipX == true)
         {
             Owner.SpriteRenderer.flipX = false;
+            SwapWeaponSide();
         }
-
-        //Debug.Log("facing: " + Facing);
-        //Debug.Log("dir: " + currentHorizontalDirection);
-
-
     }
+
+   
 
     public void FlipDirection()
     {

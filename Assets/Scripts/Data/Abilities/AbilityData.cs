@@ -22,6 +22,9 @@ public class AbilityData : ScriptableObject {
     public List<EffectData> effectData = new List<EffectData>();
     public List<RecoveryData> recoveryData = new List<RecoveryData>();
 
+    public List<AbilityData> sequencedAbilities = new List<AbilityData>();
+    public float sequenceWindow = 0.5f;
+
     //public List<EffectTag> tags = new List<EffectTag>();
 
 }

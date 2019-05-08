@@ -25,6 +25,10 @@ public class AbilityDataEditor : Editor {
         _abilityData.baseWeight = EditorHelper.FloatField("Base Weight", _abilityData.baseWeight);
 
         EditorGUILayout.Separator();
+
+        EditorGUILayout.LabelField("Sequenced Abilities", EditorStyles.boldLabel);
+        _abilityData.sequenceWindow = EditorHelper.FloatField("Sequence Window", _abilityData.sequenceWindow);
+        _abilityData.sequencedAbilities = EditorHelper.DrawList("Abilities", _abilityData.sequencedAbilities, true, null, true, DrawAbilityData);
         //_abilityData.triggers = EditorHelper.DrawList("Activation Methods", _abilityData.triggers, true, Constants.AbilityActivationMethod.None, true, DrawAbilityTriggers);
 
         EditorGUILayout.LabelField("Activation Triggers", EditorStyles.boldLabel);
@@ -140,8 +144,18 @@ public class AbilityDataEditor : Editor {
         EditorGUILayout.Separator();
 
         EditorGUILayout.LabelField("Delivery", EditorStyles.boldLabel);
-        EditorGUILayout.Separator();
         entry.deliveryMethod = EditorHelper.EnumPopup(entry.deliveryMethod);
+        EditorGUILayout.Separator();
+        entry.weaponDelivery = EditorGUILayout.Toggle("Weapon Delivery", entry.weaponDelivery);
+        if(entry.weaponDelivery == true)
+        {
+            entry.weaponPrefabName = EditorGUILayout.TextField("Weapon Prefab", entry.weaponPrefabName);
+            entry.weaponDeliveryAnimSpeed = EditorGUILayout.FloatField("Weapon Animation Speed", entry.weaponDeliveryAnimSpeed);
+            entry.weaponAnimTrigger = EditorGUILayout.TextField("Weapon Trigger", entry.weaponAnimTrigger);
+        }
+
+
+        
         EditorGUILayout.Separator();
         switch (entry.deliveryMethod)
         {
@@ -287,6 +301,7 @@ public class AbilityDataEditor : Editor {
         if(entry.directionType == AddForceInfo.DirectionType.CustomAngle)
         {
             entry.angle = EditorHelper.FloatField("Angle", entry.angle);
+            entry.error = EditorHelper.FloatField("Error", entry.error);
         }
         entry.resetCurrentVelocity = EditorGUILayout.Toggle("Reset Current Velocity?", entry.resetCurrentVelocity);
 
@@ -340,7 +355,11 @@ public class AbilityDataEditor : Editor {
 
 
 
-
+    private AbilityData DrawAbilityData(List<AbilityData> list, int index)
+    {
+        AbilityData result = EditorHelper.ObjectField<AbilityData>("Ability", list[index]);
+        return result;
+    }
 
 
 

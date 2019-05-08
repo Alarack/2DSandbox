@@ -38,6 +38,10 @@ public static class EffectFactory {
         result.animationTrigger = data.animationTrigger;
         result.durationType = data.durationType;
         result.projectileInfo = data.projectileInfo;
+        result.weaponDelivery = data.weaponDelivery;
+        result.weaponPrefabName = data.weaponPrefabName;
+        result.weaponDeliveryAnimSpeed = data.weaponDeliveryAnimSpeed;
+        result.weaponAnimTrigger = data.weaponAnimTrigger;
 
         return result;
     }

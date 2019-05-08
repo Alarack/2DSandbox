@@ -74,7 +74,7 @@ AnimationClip:
   m_Events:
   - time: 0.033333335
     functionName: RecieveAnimEvent
-    data: SwordSlash,SwordSlashDamage
+    data: SwordSlash2,SwordSlashDamage
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
     intParameter: 1

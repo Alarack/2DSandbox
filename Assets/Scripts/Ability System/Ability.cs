@@ -30,28 +30,57 @@ public class Ability
     public float ProcChance { get { return procChance; } protected set { procChance = Mathf.Clamp01(value); } }
     public int AbilityID { get; protected set; }
     public bool Equipped { get; protected set; }
+    public float ModifiedWeight { get; protected set; }
+
 
     protected float procChance = 1f;
     protected AbilityData abilityData;
     protected Timer useTimer;
     protected float baseWeight;
-    public float ModifiedWeight { get; protected set; }
+
+    //Sequence Stuff
+    public float sequenceWindow;
+    protected Timer sequenceTimer;
+    protected int sequenceIndex;
+    [System.NonSerialized]
+    protected List<Ability> sequencedAbilities = new List<Ability>();
+    public Ability ParentAbility { get; protected set; }
+
 
     #region CONSTRUCTION
 
-    public Ability(AbilityData data, GameObject source)
+    public Ability(AbilityData data, GameObject source, List<AbilityData> sequenceData = null, Ability parent = null)
     {
         abilityData = data;
         AbilityID = IDFactory.GenerateAbilityID();
         Source = source;
         EffectManager = new EffectManager(this);
         RecoveryManager = new AbilityRecoveryManager(this);
+        ParentAbility = parent;
+
 
         SetUpAbilityData();
+        SetupAbilitySequences(sequenceData);
+
 
         useTimer = new Timer(UseDuration, PopUseTimer, true, "Use");
 
         GameManager.RegisterAbility(this);
+    }
+
+    private void SetupAbilitySequences(List<AbilityData> sequenceData)
+    {
+        if (sequenceData == null || sequenceData.Count < 1)
+            return;
+
+        int count = sequenceData.Count;
+        for (int i = 0; i < count; i++)
+        {
+            //Debug.Log("Creating a sequenced ability called: " + sequenceData[i].abilityName);
+            Ability a = new Ability(sequenceData[i], Source, null, this);
+            this.sequencedAbilities.Add(a);
+        }
+        sequenceTimer = new Timer(sequenceWindow, ResetSequenceIndex, false);
     }
 
     private void SetUpAbilityData()
@@ -64,6 +93,7 @@ public class Ability
         OverrideOtherAbilities = abilityData.overrideOtherAbilities;
         baseWeight = abilityData.baseWeight;
         conditions = abilityData.conditions;
+        sequenceWindow = abilityData.sequenceWindow;
 
         CreateEffects();
         CreateRecoveryMethods();
@@ -79,8 +109,6 @@ public class Ability
             EffectManager.AddEffect(newEffect);
         }
     }
-
-
 
     private void CreateRecoveryMethods()
     {
@@ -99,6 +127,12 @@ public class Ability
         RegisterListeners();
         Equipped = true;
 
+        int count = sequencedAbilities.Count;
+        for (int i = 0; i < count; i++)
+        {
+            sequencedAbilities[i].Equip();
+        }
+
         //Debug.Log(abilityName + " has been equipped");
     }
 
@@ -108,6 +142,11 @@ public class Ability
         Equipped = false;
         Deactivate();
 
+        int count = sequencedAbilities.Count;
+        for (int i = 0; i < count; i++)
+        {
+            sequencedAbilities[i].Unequip();
+        }
         //Debug.Log(abilityName + " has been unequipped");
     }
 
@@ -224,11 +263,13 @@ public class Ability
         if (Equipped == false)
             return;
 
+        //if(ParentAbility != null)
         //Debug.Log(abilityName + " is being updated");
 
         RecoveryManager.ManagedUpdate();
         EffectManager.ManagedUpdate();
         UpdateTimers();
+        UpdateSequencedAbilities();
 
     }
 
@@ -242,16 +283,50 @@ public class Ability
         }
 
         if (useTimer != null && InUse)
-        {
             useTimer.UpdateClock();
-        }
+
+
+        if (sequenceTimer != null)
+            sequenceTimer.UpdateClock();
 
     }
 
+    private void UpdateSequencedAbilities()
+    {
+        int count = sequencedAbilities.Count;
+        for (int i = 0; i < count; i++)
+        {
+            //Debug.Log("updating sequence ability " + sequencedAbilities[i].abilityName);
+            sequencedAbilities[i].ManagedUpdate();
+        }
+    }
 
     private void PopUseTimer()
     {
         InUse = false;
+
+        if (ParentAbility != null)
+        {
+            ParentAbility.IncrementSequenceIndex();
+        }
+
+    }
+
+    public void IncrementSequenceIndex()
+    {
+        sequenceIndex++;
+        if (sequenceIndex >= sequencedAbilities.Count)
+        {
+            sequenceIndex = 0;
+        }
+
+        //Debug.Log(sequenceIndex + " is the sequence index");
+    }
+
+    private void ResetSequenceIndex()
+    {
+        //Debug.Log("resetting sequence index");
+        sequenceIndex = 0;
     }
 
     #endregion
@@ -296,19 +371,45 @@ public class Ability
         Activate(conditions);
     }
 
-
     public bool Activate(params Constants.AbilityActivationCondition[] conditions)
     {
+
+
         if (HandleActivationConditions(conditions) == false)
+        {
+            Debug.Log(abilityName + " failed an activation condition");
             return false;
+        }
 
         if (procChance < 1f && ProcRoll() == false)
+        {
+            //Debug.Log(abilityName + " failed a procroll");
             return false;
+        }
 
-        EffectManager.ActivateAllEffects();
-        InUse = true;
+        if (sequencedAbilities.Count < 1)
+        {
+            //Debug.Log(abilityName + " has no sequences and is activating");
+            EffectManager.ActivateAllEffects();
+        }
+        else
+        {
+            //Debug.Log("activating " + sequencedAbilities[sequenceIndex].abilityName + " with index of " + sequenceIndex);
+            if (sequencedAbilities[sequenceIndex].Activate())
+            {
+                //Debug.Log(sequencedAbilities[sequenceIndex].abilityName + "activated successfully");
+                sequenceTimer.ResetTimer();
+            }
+        }
+
+
+
+        if (UseDuration > 0)
+            InUse = true;
 
         //Debug.Log(abilityName + " has been activated");
+
+        targets.Clear();
 
         return true;
     }
@@ -342,7 +443,7 @@ public class Ability
             //Check For Resource
             result = RecoveryManager.HasCharges;
 
-
+            //Debug.Log(abilityName + " has charges to spend " + result);
             //Debug.Log(RecoveryManager.Charges + " charges left on " + abilityName);
 
             if (result == true)
@@ -350,6 +451,8 @@ public class Ability
                 RecoveryManager.SpendCharge();
                 //Spend Resource
             }
+
+            BufferMe(result);
             return result;
         }
 
@@ -368,6 +471,7 @@ public class Ability
                 RecoveryManager.SpendCharge();
             }
 
+            BufferMe(result);
             return result;
         }
 
@@ -382,11 +486,22 @@ public class Ability
         else
         {
             if (MeetsRequiredConditions(null) == false)
+            {
+                //Debug.Log(abilityName + " failed to meet requirements");
                 result = false;
+            }
+
         }
 
-
+    
+        BufferMe(result);
         return result;
+    }
+
+    private void BufferMe(bool passed)
+    {
+        if(passed == false)
+            InputBuffer.BufferAbility(this);
     }
 
     #endregion

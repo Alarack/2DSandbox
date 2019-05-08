@@ -13,6 +13,13 @@ public class EffectData{
     public string riderTarget;
     public List<EffectTag> tags = new List<EffectTag>();
     public EffectOrigin effectOrigin;
+
+    public bool weaponDelivery;
+    public float weaponDeliveryAnimSpeed = 1f;
+    public string weaponPrefabName;
+    public string weaponAnimTrigger;
+
+
     public EffectDeliveryMethod deliveryMethod;
     public EffectType effectType;
     public Constants.EffectDurationType durationType;

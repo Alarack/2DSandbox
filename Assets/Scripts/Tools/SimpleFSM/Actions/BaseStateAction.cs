@@ -120,7 +120,7 @@ public class BaseStateAction {
 
     protected Ability CreateAbility(AbilityData data)
     {
-        Ability result = new Ability(data, owner.gameObject);
+        Ability result = new Ability(data, owner.gameObject, data.sequencedAbilities);
         return result;
     }
 

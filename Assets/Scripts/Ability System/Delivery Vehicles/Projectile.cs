@@ -5,14 +5,18 @@ using UnityEngine;
 public class Projectile : MonoBehaviour {
 
     public bool testMode;
+    public bool rotateTowardDireciton;
+    public bool selfPropelled;
 
     [Header("VFX")]
     public GameObject particleTrail;
-
-
+    public string projectileCorpse;
+    public SpriteRenderer spriteRenderer;
 
     public StatCollectionData statTemplate;
     public StatCollection ProjectileStats { get; protected set; }
+
+    public float RotateSpeed { get { return ProjectileStats.GetStatModifiedValue(BaseStat.StatType.RotateSpeed); } }
 
     public LayerMask Mask; /*{ get; protected set; }*/
 
@@ -23,12 +27,13 @@ public class Projectile : MonoBehaviour {
     protected int penetrationCount = 0;
 
     //Movement
-    protected Rigidbody myBody;
+    protected Rigidbody2D myBody;
     protected float maxSpeed = 10f;
 
     private void Awake()
     {
-        myBody = GetComponent<Rigidbody>();
+        myBody = GetComponent<Rigidbody2D>();
+        spriteRenderer = GetComponentInChildren<SpriteRenderer>();
     }
 
     private void Start()
@@ -83,6 +88,8 @@ public class Projectile : MonoBehaviour {
         if (otherCollider != null && otherCollider.isTrigger == true)
             return;
 
+        //Debug.Log("Hit " + other.name);
+
         DeployEffectZone();
 
         HandlePenetration();
@@ -119,7 +126,25 @@ public class Projectile : MonoBehaviour {
 
     public virtual void CleanUp()
     {
+        CreateCorpse();
         Destroy(gameObject);
+    }
+
+    protected void CreateCorpse()
+    {
+        if (string.IsNullOrEmpty(projectileCorpse) == true)
+            return;
+
+
+        GameObject loadedPrefab = VisualEffectLoader.LoadVisualEffect("HitEffects", projectileCorpse);
+        
+        if(loadedPrefab == null)
+        {
+            Debug.LogError("Couldn't load a projectile impact");
+            return;
+        }
+
+        Instantiate(loadedPrefab, transform.position, transform.rotation);
     }
 
 
@@ -127,12 +152,20 @@ public class Projectile : MonoBehaviour {
     {
         if (stat == BaseStat.StatType.MoveSpeed)
             maxSpeed = ProjectileStats.GetStatModifiedValue(BaseStat.StatType.MoveSpeed);
-
     }
 
     private void FixedUpdate()
     {
-        //myBody.velocity = transform.forward * maxSpeed * Time.deltaTime;
+        if(selfPropelled)
+            myBody.velocity = transform.up * maxSpeed * Time.deltaTime;
+    }
+
+    private void Update()
+    {
+        if (rotateTowardDireciton && spriteRenderer != null)
+        {
+           transform.transform.up = Vector3.Slerp(transform.transform.up, myBody.velocity.normalized, Time.deltaTime * RotateSpeed);
+        }
     }
 
 

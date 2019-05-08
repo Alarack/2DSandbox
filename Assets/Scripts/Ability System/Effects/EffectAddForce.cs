@@ -86,14 +86,16 @@ public struct AddForceInfo {
     //public Vector2 direction;
     public float amount;
     public float angle;
+    public float error;
     public bool resetCurrentVelocity;
 
-    public AddForceInfo(DirectionType directionType, float amount, float angle = 0f, bool resetCurrentVelocity = false)
+    public AddForceInfo(DirectionType directionType, float amount, float angle = 0f,float error = 0f, bool resetCurrentVelocity = false)
     {
         this.amount = amount;
         this.directionType = directionType;
         this.angle = angle;
         this.resetCurrentVelocity = resetCurrentVelocity;
+        this.error = error;
     }
 
 
@@ -126,7 +128,13 @@ public struct AddForceInfo {
                 break;
 
             case DirectionType.CustomAngle:
-                Vector2 conversion = TargetingTools.DegreeToVector2(angle);
+
+                float offset = Random.Range(-error, error);
+
+                //Debug.Log(angle + " ANGLE");
+                //Debug.Log((angle + offset) + " OFFSET ANGLE");
+
+                Vector2 conversion = TargetingTools.DegreeToVector2(angle + offset);
 
                 if(source != null)
                     conversion = source.Entity().Movement.Facing == EntityMovement.FacingDirection.Left ? new Vector2(-conversion.x, conversion.y) : conversion;

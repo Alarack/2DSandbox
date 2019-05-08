@@ -41,6 +41,24 @@ public class EffectDelivery : MonoBehaviour {
         return null;
     }
 
+    public EffectOriginPoint? GetCurrentWeaponPoint()
+    {
+        if (owner.CurrentWeapon == null)
+            return null;
+
+        Transform currentPoint = owner.CurrentWeapon.transform.parent;
+
+        int count = effectOrigins.Count;
+        for (int i = 0; i < count; i++)
+        {
+            if (effectOrigins[i].point == currentPoint)
+                return effectOrigins[i];
+        }
+
+        return null;
+
+    }
+
    
 
 }

@@ -15,6 +15,14 @@ public class Effect
     public string riderTarget;
     public List<EffectTag> tags = new List<EffectTag>();
     public EffectOrigin effectOrigin;
+
+
+    public bool weaponDelivery;
+    public float weaponDeliveryAnimSpeed = 1f;
+    public string weaponPrefabName;
+    public string weaponAnimTrigger;
+
+
     public EffectDeliveryMethod deliveryMethod;
     public EffectType effectType;
     public Constants.EffectDurationType durationType;
@@ -102,9 +110,18 @@ public class Effect
         return ParentAbility == ability;
     }
 
-    public virtual void BeginDelivery()
+    public virtual void BeginDelivery(bool weapon = false)
     {
+
+        if(weapon == true)
+        {
+            //Debug.Log("Begining delivery with weapon");
+            CreateWeapon();
+            return;
+        }
+
         //Debug.Log("begining delivery for " + effectName + " on " + parentAbility.abilityName);
+
         switch (deliveryMethod)
         {
             case EffectDeliveryMethod.Instant:
@@ -150,6 +167,8 @@ public class Effect
 
     protected void DeliverProjectiles()
     {
+        //Debug.Log("Delivering projectiles");
+
         if (projectileInfo.projectileCount == 1)
         {
             Projectile shot = ProjectileFactory.CreateProjectile(projectileInfo, effectOrigin, ParentAbility.Source);
@@ -176,6 +195,14 @@ public class Effect
         {
             Projectile shot = ProjectileFactory.CreateProjectile(projectileInfo, effectOrigin, ParentAbility.Source, i);
             shot.Initialize(this);
+
+
+            if (projectileInfo.addInitialForce == true)
+            {
+                Vector2 force = projectileInfo.initialForce.CalcDirectionAndForce(shot.gameObject, Source);
+                shot.GetComponent<Rigidbody2D>().AddForce(force);
+            }
+
 
             if (projectileInfo.burstDelay > 0)
                 yield return delay;
@@ -265,8 +292,54 @@ public class Effect
         {
             //if (Source.Entity() is EntityEnemy)
             //    Debug.Log("anim not found on " + effectName + ", begining delivery immediately for " + effectName);
-            BeginDelivery();
+            BeginDelivery(weaponDelivery);
         }
+    }
+
+    public virtual void CreateWeapon()
+    {
+        if(Source.Entity().WeaponCreated == true)
+        {
+            //Debug.Log("Weapon already made");
+
+            if (parentAbility.OverrideOtherAbilities)
+            {
+                Source.Entity().CurrentWeapon.CleanUp();
+            }
+            else
+            {
+                return;
+            }
+        }
+
+        //Debug.Log("makin' a weapon for " + parentAbility.abilityName);
+
+        GameObject loadedPrefab = VisualEffectLoader.LoadVisualEffect("Weapons", weaponPrefabName);
+        if(loadedPrefab == null)
+        {
+            Debug.LogError("Couldn't Load " + weaponPrefabName);
+            return;
+        }
+
+        Transform point = Source.Entity().EffectDelivery.GetOriginPoint(effectOrigin);
+
+        GameObject activeWeapon = GameObject.Instantiate(loadedPrefab, point);
+
+        activeWeapon.transform.SetParent(point, false);
+        activeWeapon.transform.localPosition = Vector3.zero;
+
+        if (Source.Entity().Movement.Facing == EntityMovement.FacingDirection.Left)
+            activeWeapon.transform.localScale = new Vector3(
+                activeWeapon.transform.localScale.x * -1,
+                activeWeapon.transform.localScale.y,
+                activeWeapon.transform.localScale.z);
+
+        WeaponDelivery delivery = activeWeapon.GetComponentInChildren<WeaponDelivery>();
+        delivery.AnimHelper.PlayAnimTrigger(weaponAnimTrigger);
+        Source.Entity().CurrentWeapon = delivery;
+        Source.Entity().WeaponCreated = true;
+        delivery.Initialize(this);
+
     }
 
 

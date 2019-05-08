@@ -21,7 +21,8 @@ public class Entity : MonoBehaviour
     public StatCollection EntityStats { get; protected set; }
     public EffectDelivery EffectDelivery { get; protected set; }
 
-
+    public WeaponDelivery CurrentWeapon { get; set; }
+    public bool WeaponCreated { get; set; }
 
     public FSM EntityFSM { get; protected set; }
     public StateManager FSMManager { get; protected set; }
