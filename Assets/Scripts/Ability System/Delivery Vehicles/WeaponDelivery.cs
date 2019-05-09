@@ -26,12 +26,18 @@ public class WeaponDelivery : MonoBehaviour
 
     public void BeginEffectDelivery()
     {
+        if (parentEffect == null)
+            return;
+
         parentEffect.BeginDelivery();
 
     }
 
     public void CleanUp()
     {
+        if (parentEffect == null)
+            return;
+
         parentEffect.Source.Entity().CurrentWeapon = null;
         parentEffect.Source.Entity().WeaponCreated = false;
 
@@ -42,6 +48,9 @@ public class WeaponDelivery : MonoBehaviour
 
     public void ReadyNext()
     {
+        if (parentEffect == null)
+            return;
+
         parentEffect.Source.Entity().WeaponCreated = false;
     }
 

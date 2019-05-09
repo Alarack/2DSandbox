@@ -75,6 +75,30 @@ public class AnimHelper : MonoBehaviour
             return false;
         }
     }
+    public void PlayParticleEffect(string particleName)
+    {
+        ParticleSystem p;
+
+        Transform t = transform.Find("VFX/" +particleName);
+
+
+        if(t == null)
+        {
+            Debug.Log("Couldn't find transform " + particleName);
+            return;
+        }
+
+        p = t.GetComponent<ParticleSystem>();
+
+        if(p == null)
+        {
+            Debug.Log("Couldn't find particles");
+            return;
+        }
+
+        p.Play();
+        
+    }
 
 
     public void SetAnimEventAction(Action callback)

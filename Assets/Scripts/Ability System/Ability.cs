@@ -377,7 +377,7 @@ public class Ability
 
         if (HandleActivationConditions(conditions) == false)
         {
-            Debug.Log(abilityName + " failed an activation condition");
+            //Debug.Log(abilityName + " failed an activation condition");
             return false;
         }
 

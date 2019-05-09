@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 10cebe3e03a921f498c13bc9bb62bdaa, type: 3}
-  m_Name: SwordSlash2
+  m_Name: SwordFinal
   m_EditorClassIdentifier: 
-  abilityName: SwordSlash2
+  abilityName: SwordFinal
   baseWeight: 0
   activations:
   - activationMethod: 1
@@ -26,16 +26,16 @@ MonoBehaviour:
   abilityIcon: {fileID: 0}
   useDuration: 0.1
   procChance: 1
-  overrideOtherAbilities: 0
+  overrideOtherAbilities: 1
   effectData:
-  - effectName: SwordSlashDamage
+  - effectName: DealDamage
     riderTarget: 
     tags: 
     effectOrigin: 5
     weaponDelivery: 1
     weaponDeliveryAnimSpeed: 1
     weaponPrefabName: BasicSwordThrust
-    weaponAnimTrigger: 
+    weaponAnimTrigger: BigSlash
     deliveryMethod: 1
     effectType: 1
     durationType: 0
@@ -63,8 +63,8 @@ MonoBehaviour:
         error: 0
         resetCurrentVelocity: 0
     effectZoneInfo:
-      shape: 4
-      size: 3
+      shape: 3
+      size: 4
       durationType: 0
       instantZoneLife: 0.2
       duration: 0
@@ -73,13 +73,13 @@ MonoBehaviour:
       parentEffectToOrigin: 1
       effectZoneImpactVFX: Hit Variant
       effectZoneSpawnVFX: 
-      zoneName: SwordBox
-    animationTrigger: Attack1
+      zoneName: 
+    animationTrigger: Attack3
     layerMask:
       serializedVersion: 2
       m_Bits: 1024
     adjInfo:
-      adjustmentValue: -10
+      adjustmentValue: -25
       targetStat: 1
       modType: 0
       permanent: 1
@@ -148,16 +148,10 @@ MonoBehaviour:
       options: 
     addForceInfo:
       directionType: 5
-      amount: 500
-      angle: 35
+      amount: 1500
+      angle: 75
       error: 0
       resetCurrentVelocity: 1
-  recoveryData:
-  - type: 1
-    cooldown: 0.25
-    kills: 0
-  sequencedAbilities:
-  - {fileID: 11400000}
-  - {fileID: 11400000, guid: 02f26affc9ff2cf44892b93fe2ebe5a3, type: 2}
-  - {fileID: 11400000, guid: d48f527c3b1966b40a9b299123abff4d, type: 2}
+  recoveryData: []
+  sequencedAbilities: []
   sequenceWindow: 0.5

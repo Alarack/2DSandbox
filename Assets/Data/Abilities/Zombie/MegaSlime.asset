@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 10cebe3e03a921f498c13bc9bb62bdaa, type: 3}
-  m_Name: SwordSlash2
+  m_Name: MegaSlime
   m_EditorClassIdentifier: 
-  abilityName: SwordSlash2
-  baseWeight: 0
+  abilityName: Mega Slime
+  baseWeight: 100
   activations:
   - activationMethod: 1
     activationConditions: 
@@ -21,22 +21,33 @@ MonoBehaviour:
     gainedOrLost: 0
     statChangeTarget: 0
     activationTime: 0
-    keyBind: 1
-  conditions: []
+    keyBind: 0
+  conditions:
+  - requiredCondition: 1
+    inverse: 1
+    compareAgainstTarget: 0
+    weightModifer: 50
+    type: 2
+    targetDistance: 5
+    statValueTarget: 0
+    statValueAmount: 0
+    statRatioTarget: 1
+    statRatioAmount: 0.5
+    hasStatusType: 0
   abilityIcon: {fileID: 0}
-  useDuration: 0.1
+  useDuration: 2
   procChance: 1
   overrideOtherAbilities: 0
   effectData:
-  - effectName: SwordSlashDamage
+  - effectName: Shoot projectile
     riderTarget: 
     tags: 
-    effectOrigin: 5
-    weaponDelivery: 1
+    effectOrigin: 6
+    weaponDelivery: 0
     weaponDeliveryAnimSpeed: 1
-    weaponPrefabName: BasicSwordThrust
+    weaponPrefabName: 
     weaponAnimTrigger: 
-    deliveryMethod: 1
+    deliveryMethod: 2
     effectType: 1
     durationType: 0
     statusTypeInfo:
@@ -50,34 +61,34 @@ MonoBehaviour:
       vfxName: 
       vfxPosOffset: {x: 0, y: 0}
     projectileInfo:
-      prefabName: 
+      prefabName: Zombie Spit Projectile
       spreadType: 0
-      projectileCount: 0
+      projectileCount: 3
       error: 0
       burstDelay: 0
-      addInitialForce: 0
+      addInitialForce: 1
       initialForce:
-        directionType: 0
-        amount: 0
-        angle: 0
-        error: 0
+        directionType: 5
+        amount: 650
+        angle: 70
+        error: 15
         resetCurrentVelocity: 0
     effectZoneInfo:
-      shape: 4
+      shape: 3
       size: 3
       durationType: 0
-      instantZoneLife: 0.2
+      instantZoneLife: 0.5
       duration: 0
       interval: 0
       removeEffectOnExit: 0
-      parentEffectToOrigin: 1
-      effectZoneImpactVFX: Hit Variant
+      parentEffectToOrigin: 0
+      effectZoneImpactVFX: Splat Impact
       effectZoneSpawnVFX: 
-      zoneName: SwordBox
-    animationTrigger: Attack1
+      zoneName: 
+    animationTrigger: MegaSlime
     layerMask:
       serializedVersion: 2
-      m_Bits: 1024
+      m_Bits: 768
     adjInfo:
       adjustmentValue: -10
       targetStat: 1
@@ -90,24 +101,24 @@ MonoBehaviour:
       angle: 0
       error: 0
       resetCurrentVelocity: 0
-  - effectName: KnockBack
-    riderTarget: SwordSlashDamage
+  - effectName: Halt Movement
+    riderTarget: 
     tags: 
     effectOrigin: 0
     weaponDelivery: 0
     weaponDeliveryAnimSpeed: 1
     weaponPrefabName: 
     weaponAnimTrigger: 
-    deliveryMethod: 5
-    effectType: 2
+    deliveryMethod: 3
+    effectType: 1
     durationType: 1
     statusTypeInfo:
-      stackMethod: 2
-      duration: 0.5
+      stackMethod: 3
+      duration: 2
       interval: 0
       onCompleteEffectName: 
-      maxStacks: 0
-      statusType: 11
+      maxStacks: 1
+      statusType: 9
       animBool: 
       vfxName: 
       vfxPosOffset: {x: 0, y: 0}
@@ -139,25 +150,22 @@ MonoBehaviour:
     animationTrigger: 
     layerMask:
       serializedVersion: 2
-      m_Bits: 1024
+      m_Bits: 0
     adjInfo:
-      adjustmentValue: 0
-      targetStat: 0
-      modType: 0
+      adjustmentValue: -1
+      targetStat: 6
+      modType: 1
       permanent: 0
       options: 
     addForceInfo:
-      directionType: 5
-      amount: 500
-      angle: 35
+      directionType: 0
+      amount: 0
+      angle: 0
       error: 0
-      resetCurrentVelocity: 1
+      resetCurrentVelocity: 0
   recoveryData:
   - type: 1
-    cooldown: 0.25
+    cooldown: 3
     kills: 0
-  sequencedAbilities:
-  - {fileID: 11400000}
-  - {fileID: 11400000, guid: 02f26affc9ff2cf44892b93fe2ebe5a3, type: 2}
-  - {fileID: 11400000, guid: d48f527c3b1966b40a9b299123abff4d, type: 2}
+  sequencedAbilities: []
   sequenceWindow: 0.5

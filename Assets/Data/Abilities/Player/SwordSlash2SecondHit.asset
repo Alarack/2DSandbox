@@ -34,7 +34,7 @@ MonoBehaviour:
     effectOrigin: 5
     weaponDelivery: 1
     weaponDeliveryAnimSpeed: 1
-    weaponPrefabName: BasicSword
+    weaponPrefabName: BasicSwordThrust
     weaponAnimTrigger: Slash2
     deliveryMethod: 1
     effectType: 1
@@ -74,7 +74,7 @@ MonoBehaviour:
       effectZoneImpactVFX: Hit Variant
       effectZoneSpawnVFX: 
       zoneName: SwordBox
-    animationTrigger: 
+    animationTrigger: Attack2
     layerMask:
       serializedVersion: 2
       m_Bits: 1024

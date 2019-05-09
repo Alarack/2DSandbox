@@ -308,6 +308,7 @@ public class Effect
             }
             else
             {
+                InputBuffer.BufferAbility(parentAbility);
                 return;
             }
         }
